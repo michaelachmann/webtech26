@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webtechnologien — Übungsblatt HTML</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body data-storage-key="webtech-html-ub-progress-v1">
+
+<div class="app">
+
+  <!-- HEADER -->
+  <header class="top">
+    <div class="brand-group">
+      <a href="../" class="brand">
+        <span class="course">Webtechnologien</span>
+        <span class="sep">·</span>
+        <span>SoSe 2026</span>
+        <span class="sep">·</span>
+        <span>Übungsblatt HTML</span>
+      </a>
+      <span class="brand-sub">Lehrstuhl für Medieninformatik · Universität Regensburg · M. Achmann-Denkler &amp; C. Helmig</span>
+    </div>
+    <div class="progress-readout">
+      <span id="progress-text">0 / 0 Aufgaben</span>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+  </header>
+
+  <!-- STAGE -->
+  <main class="stage">
+
+    <!-- SLIDE 0: TITLE -->
+    <section class="slide title-slide active" data-slide="0" data-title="Übersicht">
+      <div class="kicker">Sitzung 2 · Hands-on</div>
+      <h1>HTML-Grundlagen<br><em>„Hello World“</em></h1>
+      <p class="lede">Wir bauen Aufgabe für Aufgabe eine eigene <code>HelloWorld.html</code>. Für jede Aufgabe gibt es einen Verweis auf die passende Seite in den W3Schools — lest euch dort kurz ein, bevor ihr den Code schreibt.</p>
+
+      <div class="title-meta">
+        <div class="meta-item">
+          <div class="meta-key">Navigation</div>
+          <div class="meta-val"><span class="keyhint">←</span> <span class="keyhint">→</span> oder die Punkte unten</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-key">Dauer</div>
+          <div class="meta-val">ca. 75–90 Minuten</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-key">Ziel</div>
+          <div class="meta-val">Eigene, valide HTML-Seite</div>
+        </div>
+      </div>
+
+      <div class="callout hint" style="margin-top: 32px; max-width: 720px;">
+        <span class="callout-label">Hinweise</span>
+        Arbeitet in <strong>VS Code</strong> und öffnet das Ergebnis parallel im Browser (Extension <em>Live Server</em> empfohlen). Legt einen Projektordner <code>webtech-html/</code> an. Alle Aufgaben werden in <em>einer</em> Datei <code>HelloWorld.html</code> gebaut — ihr erweitert sie Schritt für Schritt. Euer Fortschritt (die Häkchen) wird automatisch im Browser gespeichert.
+      </div>
+    </section>
+
+    <!-- SLIDE 1: TASK A -->
+    <section class="slide" data-slide="1" data-title="A · Setup">
+      <div class="eyebrow">Aufgabe A</div>
+      <div class="task-letter">A</div>
+      <h1 class="slide-title">Grundgerüst einer HTML-Seite</h1>
+      <p class="subtitle">Projektordner, DOCTYPE, <code>&lt;head&gt;</code> und <code>&lt;body&gt;</code>.</p>
+
+      <div class="slide-body">
+        <div class="refs">
+          <span class="refs-label">W3Schools</span>
+          <a href="https://www.w3schools.com/html/html_basic.asp" target="_blank" rel="noopener">HTML Basic</a>
+          <a href="https://www.w3schools.com/html/html_intro.asp" target="_blank" rel="noopener">HTML Introduction</a>
+        </div>
+
+        <ol class="tasks" data-task="A">
+          <li>
+            <input type="checkbox" class="task-check" id="A-a">
+            <label for="A-a" class="task-label">a)</label>
+            <span class="task-content">Legt einen Projektordner <code>webtech-html/</code> an und darin die Datei <code>HelloWorld.html</code>.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="A-b">
+            <label for="A-b" class="task-label">b)</label>
+            <span class="task-content">Baut das minimale HTML5-Grundgerüst auf:</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="de"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;Hello World&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;!-- Hier entsteht unser Inhalt --&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="A-c">
+            <label for="A-c" class="task-label">c)</label>
+            <span class="task-content">Öffnet die Datei im Browser. Der Tab-Titel sollte „Hello World“ sein — der sichtbare Inhalt ist noch leer. <strong>Warum?</strong></span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="A-d">
+            <label for="A-d" class="task-label">d)</label>
+            <span class="task-content">Ergänzt im <code>&lt;head&gt;</code> ein <code>&lt;meta name="author" content="EUER NAME"&gt;</code>. Prüft in den DevTools (Rechtsklick → <em>Untersuchen</em>), ob das Tag korrekt im DOM erscheint.</span>
+          </li>
+        </ol>
+
+        <div class="callout reflect">
+          <span class="callout-label">Mini-Reflexion</span>
+          Notiert in einem HTML-Kommentar (<code>&lt;!-- ... --&gt;</code>) im <code>&lt;body&gt;</code>, welche Aufgaben <code>&lt;head&gt;</code> und <code>&lt;body&gt;</code> jeweils übernehmen.
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: TASK B -->
+    <section class="slide" data-slide="2" data-title="B · Text">
+      <div class="eyebrow">Aufgabe B</div>
+      <div class="task-letter">B</div>
+      <h1 class="slide-title">Überschriften, Absätze &amp; Textauszeichnung</h1>
+      <p class="subtitle">Hierarchie, Semantik und erste Formatierung.</p>
+
+      <div class="slide-body">
+        <div class="refs">
+          <span class="refs-label">W3Schools</span>
+          <a href="https://www.w3schools.com/html/html_headings.asp" target="_blank" rel="noopener">Headings</a>
+          <a href="https://www.w3schools.com/html/html_paragraphs.asp" target="_blank" rel="noopener">Paragraphs</a>
+          <a href="https://www.w3schools.com/html/html_formatting.asp" target="_blank" rel="noopener">Formatting</a>
+        </div>
+
+        <ol class="tasks" data-task="B">
+          <li>
+            <input type="checkbox" class="task-check" id="B-a">
+            <label for="B-a" class="task-label">a)</label>
+            <span class="task-content">Erstellt eine Überschrift erster Ordnung <code>&lt;h1&gt;</code> mit dem Text „Mein erstes Web-Dokument“.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="B-b">
+            <label for="B-b" class="task-label">b)</label>
+            <span class="task-content">Ergänzt darunter drei Absätze (<code>&lt;p&gt;</code>) über euch: Name, Studiengang, Lieblings-Webseite.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="B-c">
+            <label for="B-c" class="task-label">c)</label>
+            <span class="task-content">Probiert die Hierarchie aus: Fügt eine <code>&lt;h2&gt;</code> „Über mich“ und eine <code>&lt;h3&gt;</code> „Interessen“ ein. <strong>Wie verändert sich die Darstellung?</strong></span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="B-d">
+            <label for="B-d" class="task-label">d)</label>
+            <span class="task-content">Hebt im Fließtext einzelne Wörter hervor — einmal mit <code>&lt;strong&gt;</code>, einmal mit <code>&lt;em&gt;</code>. Schaut euch im Browser an, wie sich die Defaults unterscheiden.</span>
+          </li>
+        </ol>
+
+        <div class="callout hint">
+          <span class="callout-label">Zur Diskussion</span>
+          Die Tags <code>&lt;b&gt;</code> und <code>&lt;strong&gt;</code> sehen optisch identisch aus. Warum gibt es trotzdem beide? <em>(Stichwort: strukturelles vs. semantisches Markup, vgl. Vorlesung.)</em>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: TASK C -->
+    <section class="slide" data-slide="3" data-title="C · Listen">
+      <div class="eyebrow">Aufgabe C</div>
+      <div class="task-letter">C</div>
+      <h1 class="slide-title">Listen</h1>
+      <p class="subtitle">Geordnet, ungeordnet und verschachtelt.</p>
+
+      <div class="slide-body">
+        <div class="refs">
+          <span class="refs-label">W3Schools</span>
+          <a href="https://www.w3schools.com/html/html_lists.asp" target="_blank" rel="noopener">HTML Lists</a>
+        </div>
+
+        <ol class="tasks" data-task="C">
+          <li>
+            <input type="checkbox" class="task-check" id="C-a">
+            <label for="C-a" class="task-label">a)</label>
+            <span class="task-content">Baut unter der Überschrift „Interessen“ eine <strong>ungeordnete</strong> Liste (<code>&lt;ul&gt;</code>) mit mindestens drei Einträgen (<code>&lt;li&gt;</code>).</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="C-b">
+            <label for="C-b" class="task-label">b)</label>
+            <span class="task-content">Ergänzt darunter eine <strong>geordnete</strong> Liste (<code>&lt;ol&gt;</code>) mit drei Punkten „Was ich diese Woche lerne“.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="C-c">
+            <label for="C-c" class="task-label">c)</label>
+            <span class="task-content"><strong>Bonus:</strong> Schachtelt eine weitere Liste <em>innerhalb</em> eines <code>&lt;li&gt;</code>-Elements. Was müsst ihr beachten, damit die Verschachtelung valide ist?</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: TASK D -->
+    <section class="slide" data-slide="4" data-title="D · Links">
+      <div class="eyebrow">Aufgabe D</div>
+      <div class="task-letter">D</div>
+      <h1 class="slide-title">Links — absolut, relativ, Anker</h1>
+      <p class="subtitle">Der Kern des HyperText: Dokumente untereinander vernetzen.</p>
+
+      <div class="slide-body">
+        <div class="refs">
+          <span class="refs-label">W3Schools</span>
+          <a href="https://www.w3schools.com/html/html_links.asp" target="_blank" rel="noopener">HTML Links</a>
+          <a href="https://www.w3schools.com/html/html_links_bookmarks.asp" target="_blank" rel="noopener">Bookmarks</a>
+        </div>
+
+        <ol class="tasks" data-task="D">
+          <li>
+            <input type="checkbox" class="task-check" id="D-a">
+            <label for="D-a" class="task-label">a)</label>
+            <span class="task-content"><strong>Absoluter Link:</strong> Verlinkt zur Universität (<code>https://www.uni-regensburg.de</code>) mit einem <code>&lt;a&gt;</code>-Tag. Ergänzt <code>target="_blank"</code>, damit der Link in einem neuen Tab öffnet.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="D-b">
+            <label for="D-b" class="task-label">b)</label>
+            <span class="task-content"><strong>Relativer Link:</strong> Legt eine zweite Datei <code>about.html</code> im gleichen Ordner an (minimales Grundgerüst aus A genügt). Verlinkt von <code>HelloWorld.html</code> dorthin <em>ohne</em> die vollständige URL — nur mit dem Dateinamen.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="D-c">
+            <label for="D-c" class="task-label">c)</label>
+            <span class="task-content"><strong>Anker:</strong>
+              <ul>
+                <li>Gebt eurer <code>&lt;h2&gt;</code> „Über mich“ ein Attribut <code>id="about"</code>.</li>
+                <li>Fügt ganz oben im Dokument einen Link <code>&lt;a href="#about"&gt;Zu mir springen&lt;/a&gt;</code> ein.</li>
+                <li>Testet das Sprungverhalten im Browser.</li>
+              </ul>
+            </span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="D-d">
+            <label for="D-d" class="task-label">d)</label>
+            <span class="task-content"><strong>Kombination:</strong> Verlinkt von <code>about.html</code> zurück nach <code>HelloWorld.html#about</code> — also mit <em>Dateiname und Anker</em>.</span>
+          </li>
+        </ol>
+
+        <div class="callout hint">
+          <span class="callout-label">Hinweis</span>
+          Die Tabelle relativer Pfade aus der Vorlesung (<em>same folder, child folder, parent folder</em>…) hilft bei Teilaufgabe b) und d). Zur Not: <code>../</code> bedeutet „eine Ebene höher“.
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: TASK E -->
+    <section class="slide" data-slide="5" data-title="E · Bilder">
+      <div class="eyebrow">Aufgabe E</div>
+      <div class="task-letter">E</div>
+      <h1 class="slide-title">Bilder einbauen</h1>
+      <p class="subtitle">Medien, Pfade und Accessibility.</p>
+
+      <div class="slide-body">
+        <div class="refs">
+          <span class="refs-label">W3Schools</span>
+          <a href="https://www.w3schools.com/html/html_images.asp" target="_blank" rel="noopener">HTML Images</a>
+        </div>
+
+        <ol class="tasks" data-task="E">
+          <li>
+            <input type="checkbox" class="task-check" id="E-a">
+            <label for="E-a" class="task-label">a)</label>
+            <span class="task-content">Legt einen Unterordner <code>img/</code> an und speichert dort ein beliebiges Bild (z.&nbsp;B. <code>katze.jpg</code>). Achtet auf die Dateiendung.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="E-b">
+            <label for="E-b" class="task-label">b)</label>
+            <span class="task-content">Bindet das Bild im Abschnitt „Interessen“ ein:</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>&lt;img src="img/katze.jpg" alt="Eine schlafende Katze" width="300"&gt;</pre>
+</div>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="E-c">
+            <label for="E-c" class="task-label">c)</label>
+            <span class="task-content"><strong>Fehlersuche:</strong> Ändert den <code>src</code>-Pfad absichtlich auf einen nicht existierenden Dateinamen. <strong>Was zeigt der Browser an?</strong> Warum ist das <code>alt</code>-Attribut jetzt sichtbar? (Stichwort: Accessibility, Screen Reader.)</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="E-d">
+            <label for="E-d" class="task-label">d)</label>
+            <span class="task-content">Bindet zusätzlich ein Bild über eine <strong>absolute URL</strong> ein (z.&nbsp;B. das Uni-Logo von der Uni-Website). Diskutiert kurz: <em>Wann ist welche Variante sinnvoll?</em></span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: TASK F -->
+    <section class="slide" data-slide="6" data-title="F · Block &amp; Inline">
+      <div class="eyebrow">Aufgabe F</div>
+      <div class="task-letter">F</div>
+      <h1 class="slide-title">Block vs. Inline &amp; semantische Elemente</h1>
+      <p class="subtitle">Struktur für CSS — und für Menschen, die Screen Reader nutzen.</p>
+
+      <div class="slide-body">
+        <div class="refs">
+          <span class="refs-label">W3Schools</span>
+          <a href="https://www.w3schools.com/html/html_blocks.asp" target="_blank" rel="noopener">Block &amp; Inline</a>
+          <a href="https://www.w3schools.com/html/html5_semantic_elements.asp" target="_blank" rel="noopener">Semantic Elements</a>
+        </div>
+
+        <ol class="tasks" data-task="F">
+          <li>
+            <input type="checkbox" class="task-check" id="F-a">
+            <label for="F-a" class="task-label">a)</label>
+            <span class="task-content">Umschließt die Bereiche „Über mich“ und „Interessen“ jeweils mit einem <code>&lt;section&gt;</code>-Tag. <strong>Ändert sich die Darstellung?</strong> (Ohne CSS: nein — die Struktur wird aber semantisch klarer.)</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="F-b">
+            <label for="F-b" class="task-label">b)</label>
+            <span class="task-content">Ergänzt ganz oben im <code>&lt;body&gt;</code> ein <code>&lt;header&gt;</code> mit der <code>&lt;h1&gt;</code>, und ganz unten ein <code>&lt;footer&gt;</code> mit einem kurzen Copyright-Hinweis.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="F-c">
+            <label for="F-c" class="task-label">c)</label>
+            <span class="task-content">Vergleicht <code>&lt;div&gt;</code> und <code>&lt;span&gt;</code>:
+              <ul>
+                <li>Umschließt einen ganzen Absatz mit <code>&lt;div style="background: #eee"&gt;</code>.</li>
+                <li>Umschließt <em>ein einzelnes Wort</em> in einem Absatz mit <code>&lt;span style="background: yellow"&gt;</code>.</li>
+              </ul>
+              Erklärt in eigenen Worten den Unterschied zwischen <strong>Block-</strong> und <strong>Inline</strong>-Elementen.
+            </span>
+          </li>
+        </ol>
+
+        <div class="callout reflect">
+          <span class="callout-label">Hinweis</span>
+          Das inline-Styling (<code>style="..."</code>) ist hier nur ein Hilfsmittel zum Sichtbarmachen. Nächste Woche lagern wir Gestaltung systematisch in CSS aus.
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: TASK G -->
+    <section class="slide" data-slide="7" data-title="G · DevTools">
+      <div class="eyebrow">Aufgabe G</div>
+      <div class="task-letter">G</div>
+      <h1 class="slide-title">DevTools &amp; DOM-Inspektion</h1>
+      <p class="subtitle">Die Baumstruktur aus der Vorlesung am eigenen Dokument nachvollziehen.</p>
+
+      <div class="slide-body">
+        <ol class="tasks" data-task="G">
+          <li>
+            <input type="checkbox" class="task-check" id="G-a">
+            <label for="G-a" class="task-label">a)</label>
+            <span class="task-content">Öffnet <code>HelloWorld.html</code> im Browser. Rechtsklick auf die <code>&lt;h1&gt;</code> → <em>Untersuchen</em>. Die Entwicklertools öffnen sich mit dem <code>Elements</code>-Tab.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="G-b">
+            <label for="G-b" class="task-label">b)</label>
+            <span class="task-content">Klappt den Baum auf und navigiert von <code>&lt;html&gt;</code> über <code>&lt;body&gt;</code> bis zu einem <code>&lt;li&gt;</code>-Element. Zeichnet den Pfad auf einem Notizzettel als Baum.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="G-c">
+            <label for="G-c" class="task-label">c)</label>
+            <span class="task-content">Klickt doppelt auf den Textinhalt einer Überschrift und verändert ihn direkt im Browser. <strong>Warum ist die Änderung nach dem Neuladen wieder verschwunden?</strong></span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="G-d">
+            <label for="G-d" class="task-label">d)</label>
+            <span class="task-content">Wechselt in den <code>Console</code>-Tab und gebt ein:</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>document.querySelectorAll("li").length</pre>
+</div>
+<span class="task-content">Was gibt der Browser zurück? Vergleicht mit der Anzahl eurer <code>&lt;li&gt;</code>-Tags.</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: TASK H -->
+    <section class="slide" data-slide="8" data-title="H · Output vorhersagen">
+      <div class="eyebrow">Aufgabe H</div>
+      <div class="task-letter">H</div>
+      <h1 class="slide-title">Output vorhersagen</h1>
+      <p class="subtitle">Notiert eure Vermutung <em>vor</em> dem Ausführen — und vergleicht dann.</p>
+
+      <div class="slide-body">
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>&lt;body&gt;
+  &lt;p&gt;Erster Absatz &lt;strong&gt;wichtig&lt;/strong&gt; Ende.&lt;/p&gt;
+  &lt;div&gt;
+    &lt;h2&gt;Titel&lt;/h2&gt;
+    &lt;span&gt;Inline-Text&lt;/span&gt;
+    &lt;p&gt;Zweiter Absatz&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;a href="#top"&gt;Nach oben&lt;/a&gt;
+&lt;/body&gt;</pre>
+</div>
+
+        <ol class="tasks" data-task="H">
+          <li>
+            <input type="checkbox" class="task-check" id="H-a">
+            <label for="H-a" class="task-label">a)</label>
+            <span class="task-content">Welche Elemente stehen in eigenen Zeilen (Block), welche nebeneinander (Inline)?</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="H-b">
+            <label for="H-b" class="task-label">b)</label>
+            <span class="task-content">Was passiert beim Klick auf „Nach oben“, wenn <strong>kein</strong> Element die <code>id="top"</code> trägt?</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="H-c">
+            <label for="H-c" class="task-label">c)</label>
+            <span class="task-content">Zeichnet den zugehörigen DOM-Baum schematisch (vgl. Folie zur DOM-Darstellung).</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: END -->
+    <section class="slide end-slide" data-slide="9" data-title="Geschafft">
+      <div class="eyebrow">Ziel der Sitzung</div>
+      <h1 class="slide-title">Was ihr jetzt könnt</h1>
+      <p class="subtitle">Basis für die kommende CSS-Sitzung.</p>
+
+      <div class="end-grid">
+        <div class="end-card">
+          <div class="check">✓</div>
+          <p>Ein valides HTML5-Dokument von Grund auf aufbauen.</p>
+        </div>
+        <div class="end-card">
+          <div class="check">✓</div>
+          <p>Die wichtigsten Elemente — Überschriften, Absätze, Listen, Links, Bilder — gezielt einsetzen.</p>
+        </div>
+        <div class="end-card">
+          <div class="check">✓</div>
+          <p>Block- und Inline-Elemente sowie einfache semantische Tags unterscheiden.</p>
+        </div>
+        <div class="end-card">
+          <div class="check">✓</div>
+          <p>Den DOM-Baum eures Dokuments in den DevTools nachvollziehen.</p>
+        </div>
+      </div>
+
+      <div class="callout hint" style="margin-top: 32px;">
+        <span class="callout-label">Nächste Sitzung</span>
+        Wir nehmen genau diese <code>HelloWorld.html</code> und geben ihr mit <strong>CSS</strong> Form, Farbe und Layout.
+      </div>
+
+      <div style="margin-top: 32px;">
+        <button class="reset-link" id="reset-btn">Fortschritt zurücksetzen</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER NAV -->
+  <footer class="nav">
+    <button class="nav-btn" id="prev-btn">← Zurück</button>
+    <div class="dots" id="dots"></div>
+    <button class="nav-btn" id="next-btn">Weiter →</button>
+  </footer>
+
+</div>
+
+<script src="../assets/js/main.js"></script>
+
+</body>
+</html>
