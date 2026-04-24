@@ -217,12 +217,31 @@ A single IIFE — no dependencies, no build needed.
 
 ---
 
+## Course schedule (SoSe 2026)
+
+| Datum     | Sitzung                     | Übungsblatt |
+|-----------|-----------------------------|-------------|
+| 17.04.    | Einführung & Organisation   | —           |
+| 24.04.    | HTML                        | Blatt 01    |
+| 01.05.    | Entfällt (Feiertag)         | —           |
+| 08.05.    | Übung DL: HTML              | (Blatt 01)  |
+| 15.05.    | Entfällt (Konferenz)        | —           |
+| 22.05.    | HTML & CSS                  | Blatt 02    |
+| 29.05.    | Entfällt (Konferenz)        | —           |
+| 05.06.    | JavaScript I                | Blatt 03    |
+| 12.06.    | Wiederholung: JavaScript I  | —           |
+| 19.06.    | Übung DL: JavaScript I      | (Blatt 03)  |
+| 26.06.    | JavaScript II               | Blatt 04    |
+| 03.07.    | Wiederholung: JavaScript II | —           |
+| 10.07.    | Übung DL: JavaScript II     | (Blatt 04)  |
+| 17.07.    | Vorbereitung Klausur        | —           |
+
 ## Adding a new Übungsblatt
 
 1. Create `blatt2/index.html` (copy `blatt1/index.html` as a starting point).
-2. Update `<title>`, `data-storage-key`, and the brand span to reflect the new topic.
+2. Update `<title>`, `data-storage-key`, and the brand span (date + topic).
 3. Replace all slides with the new content. Ensure slide indices are contiguous from 0.
-4. Add a new `.sheet-card` entry to the `<div class="sheet-grid">` in `index.html`.
+4. In `index.html`, change the matching `.sheet-row.upcoming` to a live `<a>` link (remove `upcoming` class, set `href`).
 
 ---
 
