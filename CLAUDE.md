@@ -225,8 +225,8 @@ A single IIFE — no dependencies, no build needed.
 | 24.04.    | HTML                        | Blatt 01    |
 | 01.05.    | Entfällt (Feiertag)         | —           |
 | 08.05.    | Übung DL: HTML              | (Blatt 01)  |
-| 15.05.    | Entfällt (Konferenz)        | —           |
-| 22.05.    | HTML & CSS                  | Blatt 02    |
+| 15.05.    | HTML & CSS                  | Blatt 02    |
+| 22.05.    | Wiederholung HTML & CSS     | —           |
 | 29.05.    | Entfällt (Konferenz)        | —           |
 | 05.06.    | JavaScript I                | Blatt 03    |
 | 12.06.    | Wiederholung: JavaScript I  | —           |
