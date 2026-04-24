@@ -3,16 +3,333 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Webtechnologien — Übungsblätter</title>
+  <title>Webtechnologien SoSe 2026 — Universität Regensburg</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    /* ── Landing-page overrides & extensions ── */
+
+    body {
+      /* Remove the blatt-page radial gradients in favour of a cleaner base */
+      background-image: none;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 72px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.55s ease forwards 0.05s;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-variation-settings: "opsz" 144, "wght" 500;
+      font-style: italic;
+      font-size: clamp(60px, 11.5vw, 136px);
+      line-height: 0.93;
+      color: var(--navy-ink);
+      letter-spacing: -0.035em;
+      margin: 0 0 40px;
+      opacity: 0;
+      animation: fadeUp 0.65s ease forwards 0.15s;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--accent);
+      font-variation-settings: "opsz" 144, "wght" 300;
+    }
+
+    .hero-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--rule);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards 0.3s;
+    }
+
+    .hero-meta-row {
+      display: flex;
+      align-items: baseline;
+      gap: 32px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.55s ease forwards 0.4s;
+    }
+
+    .hero-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .hero-meta-key {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .hero-meta-val {
+      font-family: var(--font-display);
+      font-variation-settings: "opsz" 14, "wght" 400;
+      font-size: 15px;
+      color: var(--ink-soft);
+    }
+
+    /* ── Floating code-fragment background ── */
+    .bg-canvas {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .frag {
+      position: absolute;
+      bottom: -20px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--navy);
+      white-space: nowrap;
+      animation: drift var(--dur, 18s) linear infinite;
+      animation-delay: var(--delay, 0s);
+      opacity: 0;
+    }
+    @keyframes drift {
+      0%   { transform: translateY(0);    opacity: 0;    }
+      8%   { opacity: 0.055; }
+      85%  { opacity: 0.055; }
+      100% { transform: translateY(-480px); opacity: 0; }
+    }
+
+    /* ── Section label ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 0;
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .section-count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--rule);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Sheet rows ── */
+    .sheets {
+      margin-bottom: 80px;
+      opacity: 0;
+      animation: fadeUp 0.65s ease forwards 0.55s;
+    }
+
+    .sheet-row {
+      display: grid;
+      grid-template-columns: 52px 1fr auto;
+      align-items: center;
+      gap: 0 32px;
+      padding: 22px 16px 22px 0;
+      border-bottom: 1px solid var(--rule);
+      text-decoration: none;
+      color: var(--ink);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .sheet-row::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--navy-ink);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.38s cubic-bezier(0.76, 0, 0.24, 1);
+      z-index: 0;
+    }
+    .sheet-row:hover::after { transform: scaleX(1); }
+
+    .row-num,
+    .row-body,
+    .row-end {
+      position: relative;
+      z-index: 1;
+    }
+
+    .row-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.22s;
+      letter-spacing: 0.05em;
+    }
+    .sheet-row:hover .row-num { color: var(--accent); }
+
+    .row-title {
+      font-family: var(--font-display);
+      font-variation-settings: "opsz" 48, "wght" 500;
+      font-size: clamp(18px, 2.2vw, 24px);
+      color: var(--ink);
+      transition: color 0.22s;
+      margin-bottom: 3px;
+    }
+    .sheet-row:hover .row-title { color: white; }
+
+    .row-desc {
+      font-size: 13px;
+      color: var(--ink-soft);
+      transition: color 0.22s;
+      line-height: 1.45;
+    }
+    .sheet-row:hover .row-desc { color: rgba(255,255,255,0.55); }
+
+    .row-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .row-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      color: var(--muted);
+      transition: border-color 0.22s, color 0.22s;
+    }
+    .sheet-row:hover .row-tag {
+      border-color: rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.5);
+    }
+
+    .row-end {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+    .row-arrow {
+      font-size: 20px;
+      color: var(--rule);
+      transition: color 0.22s, transform 0.22s;
+      line-height: 1;
+    }
+    .sheet-row:hover .row-arrow {
+      color: white;
+      transform: translate(4px, -2px);
+    }
+    .row-session {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: color 0.22s;
+    }
+    .sheet-row:hover .row-session { color: rgba(255,255,255,0.4); }
+
+    /* Upcoming row */
+    .sheet-row.upcoming {
+      pointer-events: none;
+      opacity: 0.38;
+    }
+    .sheet-row.upcoming::after { display: none; }
+    .sheet-row.upcoming .row-arrow { color: var(--rule); }
+
+    /* ── Site footer ── */
+    .site-footer {
+      padding: 28px 0 36px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .footer-instructors {
+      font-family: var(--font-display);
+      font-variation-settings: "opsz" 14, "wght" 400;
+      font-size: 14px;
+      font-style: italic;
+      color: var(--ink-soft);
+    }
+    .footer-inst {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .footer-right {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--rule);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-align: right;
+    }
+
+    /* ── Overrides for stage / header on this page ── */
+    main.stage {
+      align-items: flex-start;
+      padding: 0;
+    }
+    .landing-content {
+      width: 100%;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0);   }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .hero { padding: 48px 0 40px; }
+      .sheet-row { grid-template-columns: 40px 1fr auto; gap: 0 16px; }
+      .hero-meta-row { gap: 20px; }
+      .row-end { display: none; }
+    }
+  </style>
 </head>
 <body>
 
 <div class="app">
 
+  <!-- HEADER -->
   <header class="top">
     <div class="brand-group">
       <div class="brand">
@@ -24,34 +341,163 @@
     </div>
   </header>
 
-  <main class="stage" style="align-items: flex-start;">
-    <div style="width: 100%;">
-      <div class="eyebrow">Kurs</div>
-      <h1 class="slide-title" style="margin-bottom: 6px;">Übungsblätter</h1>
-      <p class="subtitle" style="margin-bottom: 0;">Digital Humanities &amp; Digitales Recht — Hands-on-Aufgaben zu jeder Sitzung.</p>
+  <!-- STAGE -->
+  <main class="stage">
+    <div class="landing-content">
 
-      <div class="sheet-grid">
+      <!-- HERO -->
+      <section class="hero">
 
-        <a href="blatt1/" class="sheet-card">
-          <div class="sheet-num">01</div>
-          <div class="sheet-info">
-            <div class="sheet-title">HTML-Grundlagen</div>
-            <div class="sheet-desc">Grundgerüst, Texte, Listen, Links, Bilder, Block vs. Inline, DevTools</div>
-            <div class="sheet-meta">8 Aufgaben · ca. 75–90 min</div>
+        <!-- floating code fragments -->
+        <div class="bg-canvas" id="bg-canvas" aria-hidden="true"></div>
+
+        <div class="hero-eyebrow">Übungsblätter · Sommersemester 2026</div>
+
+        <h1 class="hero-title">Webtech&shy;<br>nologien</h1>
+
+        <div class="hero-divider"></div>
+
+        <div class="hero-meta-row">
+          <div class="hero-meta-item">
+            <span class="hero-meta-key">Studiengang</span>
+            <span class="hero-meta-val">Digital Humanities &amp; Digitales Recht</span>
+          </div>
+          <div class="hero-meta-item">
+            <span class="hero-meta-key">Universität</span>
+            <span class="hero-meta-val">Regensburg</span>
+          </div>
+          <div class="hero-meta-item">
+            <span class="hero-meta-key">Format</span>
+            <span class="hero-meta-val">Hands-on, eine Datei per Sitzung</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- BLÄTTER LIST -->
+      <div class="section-header">
+        <span class="section-label">Übungsblätter</span>
+        <span class="section-count">01 – 08 geplant</span>
+      </div>
+
+      <div class="sheets">
+
+        <a href="blatt1/" class="sheet-row">
+          <span class="row-num">01</span>
+          <div class="row-body">
+            <div class="row-title">HTML-Grundlagen</div>
+            <div class="row-desc">Grundgerüst, Texte, Listen, Links, Bilder, Block vs. Inline, DevTools</div>
+            <div class="row-tags">
+              <span class="row-tag">8 Aufgaben</span>
+              <span class="row-tag">75 – 90 min</span>
+              <span class="row-tag">HelloWorld.html</span>
+            </div>
+          </div>
+          <div class="row-end">
+            <span class="row-session">Sitzung 2</span>
+            <span class="row-arrow">→</span>
           </div>
         </a>
 
+        <div class="sheet-row upcoming">
+          <span class="row-num">02</span>
+          <div class="row-body">
+            <div class="row-title">CSS-Grundlagen</div>
+            <div class="row-desc">Selektoren, Box-Modell, Farben, Typografie, Layout</div>
+            <div class="row-tags">
+              <span class="row-tag">In Vorbereitung</span>
+            </div>
+          </div>
+          <div class="row-end">
+            <span class="row-session">Sitzung 4</span>
+            <span class="row-arrow">·</span>
+          </div>
+        </div>
+
+        <div class="sheet-row upcoming">
+          <span class="row-num">03</span>
+          <div class="row-body">
+            <div class="row-title">Flexbox &amp; Grid</div>
+            <div class="row-desc">Moderne Layoutsysteme: responsive Spalten, Ausrichtung, Raster</div>
+            <div class="row-tags">
+              <span class="row-tag">In Vorbereitung</span>
+            </div>
+          </div>
+          <div class="row-end">
+            <span class="row-session">Sitzung 6</span>
+            <span class="row-arrow">·</span>
+          </div>
+        </div>
+
+        <div class="sheet-row upcoming">
+          <span class="row-num">04</span>
+          <div class="row-body">
+            <div class="row-title">JavaScript Grundlagen</div>
+            <div class="row-desc">Variablen, Funktionen, DOM-Manipulation, Events</div>
+            <div class="row-tags">
+              <span class="row-tag">In Vorbereitung</span>
+            </div>
+          </div>
+          <div class="row-end">
+            <span class="row-session">Sitzung 8</span>
+            <span class="row-arrow">·</span>
+          </div>
+        </div>
+
       </div>
+
     </div>
   </main>
 
-  <footer class="nav" style="justify-content: flex-end;">
-    <span style="font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;">
-      Webtechnologien SoSe 2026 · Universität Regensburg
-    </span>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-left">
+      <div class="footer-instructors">Michael Achmann-Denkler &amp; Clara Helmig</div>
+      <div class="footer-inst">Lehrstuhl für Medieninformatik · Universität Regensburg</div>
+    </div>
+    <div class="footer-right">
+      Webtechnologien<br>SoSe 2026
+    </div>
   </footer>
 
 </div>
+
+<script>
+(function () {
+  'use strict';
+
+  // Floating code fragments in the hero background
+  const FRAGMENTS = [
+    '&lt;html&gt;', '&lt;body&gt;', '&lt;div&gt;', '&lt;section&gt;', '&lt;header&gt;',
+    '&lt;/div&gt;', '&lt;a href=""&gt;', '&lt;img src=""&gt;', '&lt;p&gt;', '&lt;h1&gt;',
+    'display: flex;', 'color: #1E3A8A;', 'font-size: 2rem;', 'margin: 0 auto;',
+    'border-radius: 4px;', 'grid-template-columns:', 'position: relative;',
+    'transition: all 0.2s;', 'background: white;', 'padding: 16px 24px;',
+    'const el =', 'document.querySelector(', 'addEventListener(', 'classList.toggle(',
+    'fetch(url)', '.then(res =&gt;', 'async function', 'return data;',
+    ':root {', '@media (max-width:', 'transform: translateY(', 'opacity: 0;',
+    'box-shadow:', 'letter-spacing:', 'font-family:', 'var(--navy)',
+  ];
+
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+
+  const heroHeight = canvas.parentElement.offsetHeight || 400;
+
+  FRAGMENTS.forEach((text, i) => {
+    const span = document.createElement('span');
+    span.className = 'frag';
+    span.innerHTML = text;
+    const left = 4 + Math.random() * 88;
+    const dur  = 14 + Math.random() * 16;
+    const delay = -Math.random() * dur; // start at random phase
+    span.style.setProperty('--dur',   dur  + 's');
+    span.style.setProperty('--delay', delay + 's');
+    span.style.left = left + '%';
+    canvas.appendChild(span);
+  });
+})();
+</script>
 
 </body>
 </html>
