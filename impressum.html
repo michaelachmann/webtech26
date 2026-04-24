@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impressum — Webtechnologien SoSe 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    main.stage { align-items: flex-start; padding: 48px 0 80px; }
+    .impr-content { width: 100%; max-width: 680px; }
+    .impr-content h2 {
+      font-family: var(--font-display);
+      font-variation-settings: "opsz" 48;
+      font-weight: 500;
+      font-size: clamp(28px, 4vw, 38px);
+      color: var(--navy-ink);
+      margin: 0 0 32px;
+      letter-spacing: -0.01em;
+    }
+    .impr-section {
+      margin-bottom: 36px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .impr-section:last-child { border-bottom: none; }
+    .impr-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .impr-section p, .impr-section address {
+      font-style: normal;
+      font-size: 15px;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      margin: 0;
+    }
+    .impr-section a {
+      color: var(--navy);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .impr-section a:hover { color: var(--accent); }
+    .impr-note {
+      background: var(--navy-soft);
+      border-left: 3px solid var(--navy);
+      border-radius: 0 4px 4px 0;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--ink-soft);
+      margin-top: 16px;
+    }
+    footer.nav { justify-content: flex-start; }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="top">
+    <div class="brand-group">
+      <a href="./" class="brand">
+        <span class="course">Webtechnologien</span>
+        <span class="sep">·</span>
+        <span>SoSe 2026</span>
+      </a>
+      <span class="brand-sub">Lehrstuhl für Medieninformatik · Universität Regensburg · M. Achmann-Denkler &amp; C. Helmig</span>
+    </div>
+  </header>
+
+  <main class="stage">
+    <div class="impr-content">
+
+      <div class="eyebrow" style="margin-bottom: 12px;">Rechtliches</div>
+      <h2>Impressum</h2>
+
+      <div class="impr-section">
+        <div class="impr-label">Angaben gemäß § 5 TMG</div>
+        <address>
+          Universität Regensburg<br>
+          Lehrstuhl für Medieninformatik<br>
+          Universitätsstraße 31<br>
+          93053 Regensburg
+        </address>
+      </div>
+
+      <div class="impr-section">
+        <div class="impr-label">Verantwortlich für den Inhalt</div>
+        <p>
+          Michael Achmann-Denkler &amp; Clara Helmig<br>
+          Lehrstuhl für Medieninformatik<br>
+          Universität Regensburg<br>
+          <a href="https://achmann.me" target="_blank" rel="noopener">achmann.me</a>
+        </p>
+      </div>
+
+      <div class="impr-section">
+        <div class="impr-label">Kontakt</div>
+        <p>
+          Bei Fragen zum Kurs wenden Sie sich bitte über GRIPS oder die offizielle
+          Universitäts-E-Mail-Adresse an die Kursleitung.
+        </p>
+      </div>
+
+      <div class="impr-section">
+        <div class="impr-label">Haftungsausschluss</div>
+        <p>
+          Diese Website dient ausschließlich Lehr- und Übungszwecken im Rahmen der
+          Lehrveranstaltung „Webtechnologien" (SoSe 2026) an der Universität Regensburg.
+          Die verlinkten externen Inhalte (z.&nbsp;B. W3Schools) liegen außerhalb unseres
+          Verantwortungsbereichs.
+        </p>
+        <div class="impr-note">
+          Diese Seite ist kein kommerzielles Angebot. Sie richtet sich ausschließlich an
+          Studierende der Universität Regensburg.
+        </div>
+      </div>
+
+      <div class="impr-section">
+        <div class="impr-label">Datenschutz</div>
+        <p>
+          Diese Website verwendet keine Cookies, kein Tracking und keine externen
+          Analysedienste. Lernfortschritte werden ausschließlich lokal im Browser
+          (<code style="font-family: var(--font-mono); font-size: 0.9em; background: #F1F5F9; padding: 1px 5px; border-radius: 3px;">localStorage</code>)
+          gespeichert und verlassen das Gerät nicht.
+          Google Fonts werden über das Google CDN geladen; es gelten die
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzbestimmungen von Google</a>.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="nav">
+    <a href="./" style="font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-decoration: none;">← Zurück zur Übersicht</a>
+  </footer>
+
+</div>
+
+</body>
+</html>
