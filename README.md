@@ -29,6 +29,7 @@ Live: **[webtech26.github.io](https://webtech26.github.io)** *(URL nach Deployme
 │   ├── css/main.css        Gemeinsames Design-System
 │   └── js/main.js          Gemeinsame Logik (Navigation, Fortschritt, Copy)
 ├── blatt1/index.html       Übungsblatt 01 — HTML-Grundlagen
+├── blatt2/index.html       Übungsblatt 02 — HTML & CSS
 └── .github/workflows/
     └── pages.yml           GitHub Actions Deployment
 ```

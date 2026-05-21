@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webtechnologien — Übungsblatt CSS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <style>
+    /* ── In-slide demo styles (namespaced .demo-* so they don't leak) ── */
+
+    /* C — Selektoren: .highlight */
+    .demo-c-highlight {
+      background-color: #FFF3B0;
+      padding: 8px 12px;
+      font-style: italic;
+      margin: 0;
+    }
+
+    /* D — Farben: Swatches */
+    .demo-d-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .demo-d-swatch {
+      flex: 1 1 140px;
+      padding: 18px 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: white;
+      text-align: center;
+      border-radius: 3px;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .demo-d-transparency {
+      margin-top: 14px;
+      padding: 14px 16px;
+      background-color: rgba(184, 80, 66, 0.15);
+      border: 1px solid rgba(184, 80, 66, 0.3);
+      border-radius: 3px;
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    /* E — Box-Modell: layered diagram */
+    .demo-e-stack {
+      display: inline-block;
+      background: rgba(184, 80, 66, 0.12);
+      padding: 18px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #B85042;
+    }
+    .demo-e-stack-label { display: block; margin-bottom: 6px; }
+    .demo-e-border-layer {
+      border: 6px solid #B85042;
+      background: rgba(4, 120, 87, 0.12);
+      padding: 14px;
+      color: #047857;
+    }
+    .demo-e-padding-layer {
+      background: rgba(30, 58, 138, 0.10);
+      padding: 18px;
+      color: #1E3A8A;
+    }
+    .demo-e-content-layer {
+      background: white;
+      padding: 16px 22px;
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 14px;
+      letter-spacing: normal;
+      text-transform: none;
+    }
+    /* Rendered .highlight box after E-a */
+    .demo-e-highlight {
+      background-color: #FFF3B0;
+      border: 1px solid #B85042;
+      padding: 12px 16px;
+      margin: 0 0 24px;
+      font-style: italic;
+    }
+    .demo-e-after {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* F / G — Boxen aus dem Live-Coding-Beispiel */
+    .demo-fg-container {
+      width: 100%;
+      max-width: 500px;
+      padding: 5px;
+      background-color: white;
+      border: 1px solid var(--rule);
+    }
+    .demo-fg-container::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+    .demo-fg-box {
+      width: 80px;
+      height: 80px;
+      margin: 16px;
+      border: solid 1px #000;
+      box-sizing: content-box;
+    }
+    .demo-fg-green  { background-color: #4ADE80; }
+    .demo-fg-blue   { background-color: #2563EB; }
+    .demo-fg-yellow { background-color: #FACC15; }
+    .demo-fg-red    { background-color: #EF4444; }
+
+    /* G — relative-shift demo */
+    .demo-g-container { position: relative; }
+    .demo-g-blue-shifted {
+      position: relative;
+      left: 50px;
+    }
+
+    /* H — Spalten */
+    .demo-h-row {
+      width: 100%;
+      background: white;
+      padding: 0;
+    }
+    .demo-h-row::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+    .demo-h-column {
+      float: left;
+      width: 29%;
+      margin: 1%;
+      padding: 1%;
+      background-color: #1E2761;
+      color: white;
+      text-align: justify;
+      line-height: 1.45;
+      box-sizing: border-box;
+    }
+    .demo-h-column h3 {
+      margin: 0 0 6px;
+      color: white;
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: 14px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 6px;
+    }
+    .demo-h-column p {
+      margin: 0;
+      font-size: 12px;
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* J — Bootstrap-Vorschau (gemockt, ohne CDN-Last) */
+    .demo-bs {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: #212529;
+      background: white;
+      padding: 16px;
+      border-radius: 4px;
+    }
+    .demo-bs-h1 {
+      font-size: 22px;
+      font-weight: 500;
+      text-align: center;
+      color: #0d6efd;
+      margin: 8px 0 18px;
+    }
+    .demo-bs-alert {
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      border: 1px solid #b6d4fe;
+      border-radius: 4px;
+      background-color: #cfe2ff;
+      color: #084298;
+      font-size: 14px;
+    }
+    .demo-bs-row {
+      display: flex;
+      gap: 0;
+      margin: 0 -8px 16px;
+      flex-wrap: wrap;
+    }
+    .demo-bs-col {
+      flex: 0 0 33.333%;
+      padding: 0 8px;
+      box-sizing: border-box;
+    }
+    .demo-bs-card {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 12px;
+      font-size: 13px;
+      text-align: center;
+      color: #495057;
+    }
+    .demo-bs-btn {
+      display: inline-block;
+      padding: 8px 18px;
+      background: #0d6efd;
+      color: white;
+      font-size: 14px;
+      border: 1px solid #0d6efd;
+      border-radius: 4px;
+      font-family: inherit;
+    }
+    @media (max-width: 540px) {
+      .demo-bs-col { flex: 0 0 100%; margin-bottom: 8px; }
+    }
+  </style>
+</head>
+<body data-storage-key="webtech-css-ub-progress-v1">
+
+<div class="app">
+
+  <!-- HEADER -->
+  <header class="top">
+    <div class="brand-group">
+      <a href="../" class="brand">
+        <span class="course">Webtechnologien</span>
+        <span class="sep">·</span>
+        <span>SoSe 2026</span>
+        <span class="sep">·</span>
+        <span>Übungsblatt CSS</span>
+      </a>
+      <span class="brand-sub">Lehrstuhl für Medieninformatik · Universität Regensburg · M. Achmann-Denkler &amp; C. Helmig</span>
+    </div>
+    <div class="progress-readout">
+      <span id="progress-text">0 / 0 Aufgaben</span>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+  </header>
+
+  <!-- STAGE -->
+  <main class="stage">
+
+    <!-- SLIDE 0: TITLE -->
+    <section class="slide title-slide active" data-slide="0" data-title="Übersicht">
+      <div class="kicker">15. Mai 2026 · Hands-on</div>
+      <h1>HTML &amp; CSS<br><em>„Form folgt Inhalt“</em></h1>
+      <p class="lede">Wir geben unserer <code>HelloWorld.html</code> aus der letzten Sitzung Farbe, Form und Layout — und schreiben dafür Schritt für Schritt eine eigene <code>style.css</code>. Lest euch bei jeder Aufgabe kurz auf <strong>MDN</strong> ein, bevor ihr Code schreibt: Die Aufgaben sind so gebaut, dass ihr CSS selbständig aus der Doku lernen könnt.</p>
+
+      <div class="title-meta">
+        <div class="meta-item">
+          <div class="meta-key">Navigation</div>
+          <div class="meta-val"><span class="keyhint">←</span> <span class="keyhint">→</span> oder die Punkte unten</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-key">Dauer</div>
+          <div class="meta-val">ca. 90 Minuten</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-key">Ziel</div>
+          <div class="meta-val">Eigene Seite gestalten &amp; layouten</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-key">Doku</div>
+          <div class="meta-val"><a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" rel="noopener" style="color: var(--navy); text-decoration: none; border-bottom: 1px solid var(--rule);">developer.mozilla.org</a></div>
+        </div>
+      </div>
+
+      <div class="callout hint" style="margin-top: 32px; max-width: 760px;">
+        <span class="callout-label">Voraussetzung</span>
+        Ihr habt eure <code>HelloWorld.html</code> aus Blatt 01 im Projektordner <code>webtech-html/</code>. Falls nicht: legt eine neue Seite mit dem HTML5-Grundgerüst, einer <code>&lt;h1&gt;</code>, mindestens zwei Absätzen, einer Liste und einem Bild an. Erweitert sie dann Schritt für Schritt — euer Fortschritt (die Häkchen) wird automatisch im Browser gespeichert.
+      </div>
+    </section>
+
+    <!-- SLIDE 1: TASK A — CSS einbinden -->
+    <section class="slide" data-slide="1" data-title="A · CSS einbinden">
+      <div class="eyebrow">Aufgabe A</div>
+      <div class="task-letter">A</div>
+      <h1 class="slide-title">CSS an HTML binden</h1>
+      <p class="subtitle">Inline, intern, extern — und warum nur eine Variante in die Produktion gehört.</p>
+
+      <div class="slide-body">
+        <div class="refs">
+          <span class="refs-label">MDN</span>
+          <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Getting_started" target="_blank" rel="noopener">CSS in HTML einbinden</a>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" rel="noopener">CSS-Übersicht</a>
+        </div>
+
+        <ol class="tasks" data-task="A">
+          <li>
+            <input type="checkbox" class="task-check" id="A-a">
+            <label for="A-a" class="task-label">a)</label>
+            <span class="task-content"><strong>Inline CSS:</strong> Färbt eure <code>&lt;h1&gt;</code> testweise direkt im Tag rot:</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>&lt;h1 style="color: red;"&gt;Mein erstes Web-Dokument&lt;/h1&gt;</pre>
+</div>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="A-b">
+            <label for="A-b" class="task-label">b)</label>
+            <span class="task-content"><strong>Internal CSS:</strong> Entfernt das <code>style</code>-Attribut wieder und fügt im <code>&lt;head&gt;</code> einen <code>&lt;style&gt;</code>-Block ein:</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>&lt;style&gt;
+  h1 { color: red; }
+&lt;/style&gt;</pre>
+</div>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="A-c">
+            <label for="A-c" class="task-label">c)</label>
+            <span class="task-content"><strong>External CSS:</strong> Legt im Projektordner einen Unterordner <code>css/</code> an, darin die Datei <code>style.css</code>. Verschiebt die Regel <code>h1 { color: red; }</code> dort hinein und ersetzt den <code>&lt;style&gt;</code>-Block im <code>&lt;head&gt;</code> durch:</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>&lt;link rel="stylesheet" href="css/style.css"&gt;</pre>
+</div>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="A-d">
+            <label for="A-d" class="task-label">d)</label>
+            <span class="task-content"><strong>Probe:</strong> Ändert in <code>style.css</code> die Farbe auf <code>blue</code> und ladet die HTML-Seite neu. Der Browser hat die CSS-Datei automatisch nachgeladen — ihr habt die Darstellung verändert, <em>ohne</em> das HTML anzufassen.</span>
+          </li>
+        </ol>
+
+        <div class="callout hint">
+          <span class="callout-label">Separation of Concerns</span>
+          HTML beschreibt <strong>Struktur &amp; Inhalt</strong>, CSS beschreibt <strong>Form &amp; Layout</strong>. Externes CSS ist deshalb die einzige Variante, die ihr produktiv verwenden solltet — nur so lassen sich Inhalt und Gestaltung unabhängig pflegen (vgl. <a href="https://www.csszengarden.com/" target="_blank" rel="noopener">CSS Zen Garden</a>: ein HTML-Dokument, viele Designs).
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: TASK B — CSS-Regel & Typografie -->
+    <section class="slide" data-slide="2" data-title="B · CSS-Regel">
+      <div class="eyebrow">Aufgabe B</div>
+      <div class="task-letter">B</div>
+      <h1 class="slide-title">Aufbau einer CSS-Regel &amp; Typografie</h1>
+      <p class="subtitle">Selektor, Eigenschaft, Wert — und erste Gestaltung.</p>
+
+      <div class="slide-body">
+        <div class="refs">
+          <span class="refs-label">MDN</span>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_syntax" target="_blank" rel="noopener">CSS-Syntax</a>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_fonts" target="_blank" rel="noopener">Schrift-Eigenschaften</a>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_text" target="_blank" rel="noopener">Text-Eigenschaften</a>
+        </div>
+
+        <p style="color: var(--ink-soft); margin: 0 0 8px;">Eine CSS-Regel besteht aus <strong>Selektor</strong> und einem Block mit <strong>Eigenschaft–Wert-Paaren</strong>:</p>
+
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>selektor {
+  eigenschaft: wert;
+  weitere-eigenschaft: wert;
+}</pre>
+</div>
+
+        <ol class="tasks" data-task="B">
+          <li>
+            <input type="checkbox" class="task-check" id="B-a">
+            <label for="B-a" class="task-label">a)</label>
+            <span class="task-content">Setzt im <code>body</code> eine angenehme Lese-Schriftart und Grundfarbe. Tipp: <code>font-family</code> akzeptiert eine Liste — der Browser nimmt die erste Schrift, die er findet.</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>body {
+  font-family: Georgia, "Times New Roman", serif;
+  color: #222;
+  line-height: 1.6;
+}</pre>
+</div>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="B-b">
+            <label for="B-b" class="task-label">b)</label>
+            <span class="task-content">Vergrößert eure <code>&lt;h1&gt;</code> und zentriert sie. Schaut auf MDN nach den Eigenschaften <code>font-size</code> und <code>text-align</code>.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="B-c">
+            <label for="B-c" class="task-label">c)</label>
+            <span class="task-content">Probiert <code>font-weight</code>, <code>font-style</code> und <code>text-decoration</code> auf einem Absatz aus. <strong>Welche Werte</strong> nimmt jede Eigenschaft an? (Antwort in der MDN-Doku der jeweiligen Eigenschaft.)</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="B-d">
+            <label for="B-d" class="task-label">d)</label>
+            <span class="task-content"><strong>Mehrere Selektoren auf einmal:</strong> Eine Regel kann für mehrere Selektoren gelten, getrennt durch Komma. Gebt allen Überschriften zugleich eine andere Schriftart:</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>h1, h2, h3 {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}</pre>
+</div>
+          </li>
+        </ol>
+
+        <div class="callout reflect">
+          <span class="callout-label">Mini-Reflexion</span>
+          Schaut euch eure Seite an — und dann eine Lieblings-Website mit den DevTools (Rechtsklick → <em>Untersuchen</em> → Tab <em>Styles</em>). Findet ihr in der echten Website Regeln wieder, die ihr jetzt selbst geschrieben habt?
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: TASK C — Selektoren -->
+    <section class="slide" data-slide="3" data-title="C · Selektoren">
+      <div class="eyebrow">Aufgabe C</div>
+      <div class="task-letter">C</div>
+      <h1 class="slide-title">Selektoren: Typ, ID, Klasse</h1>
+      <p class="subtitle">Wie wähle ich gezielt einzelne, mehrere oder gruppierte Elemente aus?</p>
+
+      <div class="slide-body">
+        <div class="refs">
+          <span class="refs-label">MDN</span>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors" target="_blank" rel="noopener">Selektoren — Übersicht</a>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/class" target="_blank" rel="noopener">class-Attribut</a>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id" target="_blank" rel="noopener">id-Attribut</a>
+        </div>
+
+        <p style="color: var(--ink-soft); margin: 0 0 8px;">Drei Selektoren reichen für 90 % aller Fälle:</p>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>p          { /* Typ-Selektor: alle &lt;p&gt;-Elemente */ }
+.zitat     { /* Klassen-Selektor: alle Elemente mit class="zitat" */ }
+#intro     { /* ID-Selektor: das eine Element mit id="intro" */ }</pre>
+</div>
+
+        <ol class="tasks" data-task="C">
+          <li>
+            <input type="checkbox" class="task-check" id="C-a">
+            <label for="C-a" class="task-label">a)</label>
+            <span class="task-content"><strong>Typ-Selektor:</strong> Gebt allen <code>&lt;li&gt;</code>-Elementen einen kleinen linken Innenabstand (<code>padding-left</code>) und eine andere Textfarbe.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="C-b">
+            <label for="C-b" class="task-label">b)</label>
+            <span class="task-content"><strong>Klassen-Selektor:</strong> Vergebt im HTML an einen eurer Absätze die Klasse <code>class="highlight"</code> und stylt diese Klasse in CSS:</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>&lt;p class="highlight"&gt;Dieser Absatz ist besonders wichtig.&lt;/p&gt;</pre>
+</div>
+<div class="demo-split">
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>.highlight {
+  background-color: #FFF3B0;
+  padding: 8px 12px;
+  font-style: italic;
+}</pre>
+</div>
+<div class="preview">
+  <p class="demo-c-highlight">Dieser Absatz ist besonders wichtig.</p>
+</div>
+</div>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="C-c">
+            <label for="C-c" class="task-label">c)</label>
+            <span class="task-content"><strong>ID-Selektor:</strong> Gebt eurer <code>&lt;h2&gt;</code> „Über mich“ aus Blatt 01 die <code>id="about"</code> (falls noch nicht geschehen) und stylt ausschließlich dieses Element über <code>#about { ... }</code>.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="C-d">
+            <label for="C-d" class="task-label">d)</label>
+            <span class="task-content"><strong>Mehrere Klassen kombinieren:</strong> Ein Element darf mehrere Klassen tragen — getrennt durch ein Leerzeichen. Probiert:</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>&lt;p class="highlight small"&gt;Wichtig, aber leise.&lt;/p&gt;</pre>
+</div>
+<span class="task-content">Schreibt eine zweite Klasse <code>.small { font-size: 0.85em; }</code> und beobachtet, dass <em>beide</em> Regeln gleichzeitig wirken.</span>
+          </li>
+        </ol>
+
+        <div class="callout hint">
+          <span class="callout-label">Faustregel</span>
+          <code>id</code> nur <em>einmal pro Seite</em> verwenden (z. B. für einen Anker oder Anker-Sprung). <code>class</code> dagegen beliebig oft — das ist das Werkzeug, mit dem man wiederverwendbare Stile baut. Frameworks wie Bootstrap arbeiten <em>ausschließlich</em> mit Klassen.
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: TASK D — Farben & Einheiten -->
+    <section class="slide" data-slide="4" data-title="D · Farben">
+      <div class="eyebrow">Aufgabe D</div>
+      <div class="task-letter">D</div>
+      <h1 class="slide-title">Farben &amp; Einheiten</h1>
+      <p class="subtitle">Vier Wege, eine Farbe zu schreiben — und der Unterschied zwischen <code>px</code>, <code>em</code> und <code>%</code>.</p>
+
+      <div class="slide-body">
+        <div class="refs">
+          <span class="refs-label">MDN</span>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value" target="_blank" rel="noopener">Farben</a>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Values_and_Units" target="_blank" rel="noopener">Werte &amp; Einheiten</a>
+        </div>
+
+        <p style="color: var(--ink-soft); margin: 0 0 8px;">Eine Farbe lässt sich auf vier verschiedene Arten ausdrücken — alle vier Zeilen ergeben <em>dasselbe Rot</em>:</p>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>color: red;                  /* Farbname  */
+color: #FF0000;              /* Hex       */
+color: rgb(255, 0, 0);       /* RGB       */
+color: rgba(255, 0, 0, 0.5); /* RGB + Alpha (50 % transparent) */</pre>
+</div>
+<div class="preview">
+  <div class="demo-d-row">
+    <div class="demo-d-swatch" style="background: red;">red</div>
+    <div class="demo-d-swatch" style="background: #FF0000;">#FF0000</div>
+    <div class="demo-d-swatch" style="background: rgb(255,0,0);">rgb(255,0,0)</div>
+    <div class="demo-d-swatch" style="background: rgba(255,0,0,0.5); color: #1a1a1a;">rgba(…, 0.5)</div>
+  </div>
+  <p class="demo-d-transparency">Absatz mit <code>rgba(184, 80, 66, 0.15)</code>-Hintergrund — die Schrift bleibt lesbar, weil nur 15 % Deckkraft.</p>
+</div>
+
+        <ol class="tasks" data-task="D">
+          <li>
+            <input type="checkbox" class="task-check" id="D-a">
+            <label for="D-a" class="task-label">a)</label>
+            <span class="task-content">Gebt eurer Seite eine dezente Hintergrundfarbe für den <code>body</code> (z. B. <code>#FAF7F2</code>) und eine andere für einen <code>&lt;section&gt;</code>-Block. Sucht euch die Hex-Codes mit dem Browser-Color-Picker oder unter <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/named-color" target="_blank" rel="noopener">MDN – named-color</a>.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="D-b">
+            <label for="D-b" class="task-label">b)</label>
+            <span class="task-content"><strong>Transparenz:</strong> Setzt auf einem Absatz <code>background-color: rgba(184, 80, 66, 0.15);</code> und vergleicht mit <code>rgb(...)</code> ohne Alpha. Der Wert hinter dem Komma steuert die Deckkraft (<code>0</code> = unsichtbar, <code>1</code> = voll).</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="D-c">
+            <label for="D-c" class="task-label">c)</label>
+            <span class="task-content"><strong>Längen vergleichen:</strong> Setzt drei aufeinanderfolgende Absätze auf jeweils <code>font-size: 16px</code>, <code>font-size: 1em</code> und <code>font-size: 120%</code>. Was passiert, wenn ihr nun <code>body { font-size: 20px; }</code> hinzufügt?</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="D-d">
+            <label for="D-d" class="task-label">d)</label>
+            <span class="task-content"><strong>Mini-Reflexion:</strong> <code>px</code> ist eine <em>absolute</em> Einheit, <code>em</code> und <code>%</code> sind <em>relativ</em>. Warum ist Letzteres für Barrierefreiheit (Schrift im Browser vergrößerbar!) wichtig?</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: TASK E — Box-Modell -->
+    <section class="slide" data-slide="5" data-title="E · Box-Modell">
+      <div class="eyebrow">Aufgabe E</div>
+      <div class="task-letter">E</div>
+      <h1 class="slide-title">Das Box-Modell</h1>
+      <p class="subtitle">Jedes HTML-Element ist eine Box: <em>content → padding → border → margin</em>.</p>
+
+      <div class="slide-body">
+        <div class="refs">
+          <span class="refs-label">MDN</span>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model" target="_blank" rel="noopener">Das Box-Modell</a>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin" target="_blank" rel="noopener">margin</a>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding" target="_blank" rel="noopener">padding</a>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border" target="_blank" rel="noopener">border</a>
+        </div>
+
+<div class="demo-split">
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>/* Vier Schichten —
+   von innen nach außen */
+.box {
+  width: 200px;
+  padding: 16px;
+  border: 2px solid #B85042;
+  margin: 24px;
+}</pre>
+</div>
+<div class="preview">
+  <div class="demo-e-stack">
+    <span class="demo-e-stack-label">margin</span>
+    <div class="demo-e-border-layer">
+      <span class="demo-e-stack-label">border</span>
+      <div class="demo-e-padding-layer">
+        <span class="demo-e-stack-label">padding</span>
+        <div class="demo-e-content-layer">Inhalt der Box</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+        <ol class="tasks" data-task="E">
+          <li>
+            <input type="checkbox" class="task-check" id="E-a">
+            <label for="E-a" class="task-label">a)</label>
+            <span class="task-content">Gebt eurer <code>.highlight</code>-Klasse aus Aufgabe C einen <strong>Rand</strong>, etwas <strong>Innenabstand</strong> und einen <strong>Außenabstand nach unten</strong>:</span>
+<div class="demo-split">
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>.highlight {
+  border: 1px solid #B85042;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+}</pre>
+</div>
+<div class="preview">
+  <p class="demo-e-highlight">Dieser Absatz ist besonders wichtig.</p>
+  <p class="demo-e-after">↑ 24 px Außenabstand (margin-bottom)</p>
+</div>
+</div>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="E-b">
+            <label for="E-b" class="task-label">b)</label>
+            <span class="task-content"><strong>Kurz- und Langform:</strong> <code>padding: 12px 16px;</code> ist die Kurzform für <code>padding-top/bottom: 12px;</code> und <code>padding-left/right: 16px;</code>. Probiert die Varianten mit <em>einem</em>, <em>zwei</em>, <em>drei</em> und <em>vier</em> Werten — welche Reihenfolge gilt (Tipp: Uhrzeigersinn ab oben)?</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="E-c">
+            <label for="E-c" class="task-label">c)</label>
+            <span class="task-content"><strong>DevTools-Inspektor:</strong> Öffnet die DevTools, klickt auf ein gestyltes Element und sucht im rechten Bereich die <strong>Box-Modell-Grafik</strong> (oder „Computed“ → „Layout“). Ihr seht <em>content, padding, border, margin</em> als verschachtelte Rechtecke — das ist genau das Modell aus der Vorlesung.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="E-d">
+            <label for="E-d" class="task-label">d)</label>
+            <span class="task-content"><strong>Zentrieren mit auto-Margin:</strong> Setzt auf einer Box <code>width: 600px; margin: 0 auto;</code> — was passiert? Warum funktioniert <code>auto</code> nur für die <em>horizontalen</em> Außenabstände?</span>
+          </li>
+        </ol>
+
+        <div class="callout reflect">
+          <span class="callout-label">Mini-Reflexion</span>
+          Im DevTools-Layout-Tab seht ihr auch die tatsächliche Gesamtbreite einer Box: <code>width + padding-left + padding-right + border-left + border-right</code>. Genau deshalb fühlen sich Boxen manchmal „größer“ an, als die <code>width</code>-Angabe vermuten lässt.
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: TASK F — Display / Block & Inline -->
+    <section class="slide" data-slide="6" data-title="F · Block &amp; Inline">
+      <div class="eyebrow">Aufgabe F</div>
+      <div class="task-letter">F</div>
+      <h1 class="slide-title">Block vs. Inline &amp; die <code>display</code>-Eigenschaft</h1>
+      <p class="subtitle">Vier farbige Kästen — und warum sie untereinander stehen.</p>
+
+      <div class="slide-body">
+        <div class="refs">
+          <span class="refs-label">MDN</span>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/display" target="_blank" rel="noopener">display</a>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div" target="_blank" rel="noopener">div</a>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/span" target="_blank" rel="noopener">span</a>
+        </div>
+
+        <p style="color: var(--ink-soft); margin: 0 0 8px;">Legt eine neue Datei <code>boxen.html</code> an mit folgendem Inhalt:</p>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="de"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;Boxen&lt;/title&gt;
+  &lt;link rel="stylesheet" href="css/boxen.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id="container"&gt;
+    &lt;div id="green"  class="box"&gt;&lt;/div&gt;
+    &lt;div id="blue"   class="box"&gt;&lt;/div&gt;
+    &lt;div id="yellow" class="box"&gt;&lt;/div&gt;
+    &lt;div id="red"    class="box"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+
+        <p style="color: var(--ink-soft); margin: 12px 0 8px;">… und eine Datei <code>css/boxen.css</code>:</p>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>#container {
+  width: 500px;
+  padding: 5px;
+  margin: 50px auto;
+  background-color: #FAFAFA;
+}
+.box {
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  border: solid 1px #000;
+}
+#green  { background-color: green;  }
+#blue   { background-color: blue;   }
+#yellow { background-color: yellow; }
+#red    { background-color: red;    }</pre>
+</div>
+<div class="preview">
+  <div class="demo-fg-container">
+    <div class="demo-fg-box demo-fg-green"></div>
+    <div class="demo-fg-box demo-fg-blue"></div>
+    <div class="demo-fg-box demo-fg-yellow"></div>
+    <div class="demo-fg-box demo-fg-red"></div>
+  </div>
+</div>
+
+        <ol class="tasks" data-task="F">
+          <li>
+            <input type="checkbox" class="task-check" id="F-a">
+            <label for="F-a" class="task-label">a)</label>
+            <span class="task-content">Öffnet <code>boxen.html</code> im Browser. <strong>Warum stehen die vier Boxen untereinander</strong>, obwohl im Container reichlich Platz wäre? (Stichwort: <code>&lt;div&gt;</code> ist ein Block-Element.)</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="F-b">
+            <label for="F-b" class="task-label">b)</label>
+            <span class="task-content">Ergänzt in <code>.box</code> die Zeile <code>display: inline-block;</code>. <strong>Was ändert sich</strong>? Lest auf MDN nach, was <code>inline-block</code> von <code>block</code> unterscheidet.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="F-c">
+            <label for="F-c" class="task-label">c)</label>
+            <span class="task-content"><strong>display: none:</strong> Blendet die gelbe Box mit <code>#yellow { display: none; }</code> aus. <strong>Was passiert mit dem Platz</strong>, den sie vorher belegt hat? Vergleicht mit <code>visibility: hidden;</code> — wo liegt der Unterschied?</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="F-d">
+            <label for="F-d" class="task-label">d)</label>
+            <span class="task-content"><strong>span vs. div:</strong> Fügt in einem Absatz <em>auf eurer HelloWorld-Seite</em> ein <code>&lt;span class="marker"&gt;…&lt;/span&gt;</code> um <em>ein einzelnes Wort</em> ein und gebt ihm einen gelben Hintergrund. Versucht dasselbe mit <code>&lt;div class="marker"&gt;</code> — was passiert?</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: TASK G — Positionierung -->
+    <section class="slide" data-slide="7" data-title="G · Positionierung">
+      <div class="eyebrow">Aufgabe G</div>
+      <div class="task-letter">G</div>
+      <h1 class="slide-title">Positionierung: static, relative, absolute, fixed</h1>
+      <p class="subtitle">Vier Modi — und wann ihr welchen braucht.</p>
+
+      <div class="slide-body">
+        <div class="refs">
+          <span class="refs-label">MDN</span>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/position" target="_blank" rel="noopener">position</a>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/z-index" target="_blank" rel="noopener">z-index</a>
+        </div>
+
+        <p style="color: var(--ink-soft); margin: 0 0 8px;">Erweitert <code>boxen.css</code> aus der vorherigen Aufgabe. Ergänzt zuerst den Container — das wird gleich wichtig:</p>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>#container {
+  position: relative;   /* macht den Container zum Bezugsrahmen */
+  /* … andere Eigenschaften bleiben */
+}</pre>
+</div>
+
+        <ol class="tasks" data-task="G">
+          <li>
+            <input type="checkbox" class="task-check" id="G-a">
+            <label for="G-a" class="task-label">a)</label>
+            <span class="task-content"><strong>relative:</strong> Schiebt die blaue Box <em>relativ zu ihrer ursprünglichen Position</em> nach rechts:</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>#blue {
+  background-color: blue;
+  position: relative;
+  top: 0px;
+  left: 50px;
+}</pre>
+</div>
+<div class="preview">
+  <div class="demo-fg-container demo-g-container">
+    <div class="demo-fg-box demo-fg-green"></div>
+    <div class="demo-fg-box demo-fg-blue demo-g-blue-shifted"></div>
+    <div class="demo-fg-box demo-fg-yellow"></div>
+    <div class="demo-fg-box demo-fg-red"></div>
+  </div>
+</div>
+<span class="task-content"><strong>Beobachtet:</strong> Der Platz, an dem die Box „eigentlich“ wäre, bleibt freigehalten.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="G-b">
+            <label for="G-b" class="task-label">b)</label>
+            <span class="task-content"><strong>absolute:</strong> Ändert bei <code>#blue</code> die Eigenschaft auf <code>position: absolute;</code>. <strong>Was passiert</strong>? Die Box wird aus dem normalen Fluss gerissen — andere Elemente rücken nach. Sie positioniert sich nun <em>relativ zum nächsten positionierten Vorfahren</em> (deshalb haben wir oben <code>#container { position: relative; }</code> gesetzt).</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="G-c">
+            <label for="G-c" class="task-label">c)</label>
+            <span class="task-content"><strong>fixed:</strong> Setzt stattdessen <code>position: fixed; top: 10px; right: 10px;</code> auf <code>#blue</code>. Scrollt die Seite (ggf. Inhalte verlängern). <strong>Wo bleibt die Box</strong>? — Genau so funktionieren Cookie-Banner und Sticky-Header.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="G-d">
+            <label for="G-d" class="task-label">d)</label>
+            <span class="task-content"><strong>z-index:</strong> Setzt <code>#blue</code> wieder auf <code>position: absolute; top: 0; left: 0;</code> — die Box überlappt nun die grüne. Setzt zusätzlich <code>z-index: 10;</code> auf <code>#green</code>. Schaut, wer jetzt oben liegt, und lest auf MDN nach, wie <code>z-index</code> die <em>Stapelreihenfolge</em> bestimmt.</span>
+          </li>
+        </ol>
+
+        <div class="callout hint">
+          <span class="callout-label">Merksatz</span>
+          <strong>static</strong> = normal im Fluss · <strong>relative</strong> = im Fluss, aber verschoben · <strong>absolute</strong> = aus dem Fluss, relativ zum positionierten Vorfahren · <strong>fixed</strong> = aus dem Fluss, relativ zum Viewport (scrollt nicht mit).
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: TASK H — Float & Mehrspaltigkeit (Bootstrap-Vorbote) -->
+    <section class="slide" data-slide="8" data-title="H · Spalten">
+      <div class="eyebrow">Aufgabe H</div>
+      <div class="task-letter">H</div>
+      <h1 class="slide-title">Mehrspaltige Layouts: float &amp; Spalten</h1>
+      <p class="subtitle">Wie aus mehreren Boxen ein Magazin-Layout wird — der Ursprung von Bootstrap &amp; Co.</p>
+
+      <div class="slide-body">
+        <div class="refs">
+          <span class="refs-label">MDN</span>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/float" target="_blank" rel="noopener">float</a>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clear" target="_blank" rel="noopener">clear</a>
+        </div>
+
+        <p style="color: var(--ink-soft); margin: 0 0 8px;">Legt eine neue Datei <code>spalten.html</code> mit drei Spalten an und bindet eine neue <code>css/spalten.css</code> ein:</p>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>&lt;section class="row"&gt;
+  &lt;div class="column"&gt;&lt;h3&gt;Spalte 1&lt;/h3&gt;&lt;p&gt;Lorem ipsum dolor sit amet …&lt;/p&gt;&lt;/div&gt;
+  &lt;div class="column"&gt;&lt;h3&gt;Spalte 2&lt;/h3&gt;&lt;p&gt;Lorem ipsum dolor sit amet …&lt;/p&gt;&lt;/div&gt;
+  &lt;div class="column"&gt;&lt;h3&gt;Spalte 3&lt;/h3&gt;&lt;p&gt;Lorem ipsum dolor sit amet …&lt;/p&gt;&lt;/div&gt;
+&lt;/section&gt;</pre>
+</div>
+
+        <ol class="tasks" data-task="H">
+          <li>
+            <input type="checkbox" class="task-check" id="H-a">
+            <label for="H-a" class="task-label">a)</label>
+            <span class="task-content"><strong>Floating:</strong> Lasst alle drei Spalten nebeneinander schwimmen:</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>.column {
+  float: left;
+  width: 29%;
+  margin: 1%;
+  padding: 1%;
+  background-color: #1E2761;
+  color: white;
+  text-align: justify;
+  line-height: 1.5;
+}</pre>
+</div>
+<div class="preview">
+  <section class="demo-h-row">
+    <div class="demo-h-column">
+      <h3>Spalte 1</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+    </div>
+    <div class="demo-h-column">
+      <h3>Spalte 2</h3>
+      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+    </div>
+    <div class="demo-h-column">
+      <h3>Spalte 3</h3>
+      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+    </div>
+  </section>
+</div>
+<span class="task-content">Rechnet kurz nach: drei Spalten à <code>29% + 2 × 1% margin + 2 × 1% padding ≈ 33%</code>. So bleibt das Layout flexibel.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="H-b">
+            <label for="H-b" class="task-label">b)</label>
+            <span class="task-content"><strong>Variation:</strong> Ändert die Spaltenanzahl auf <strong>zwei</strong> und passt nur die <code>width</code> der <code>.column</code> an (auf ca. <code>46%</code>). Das HTML kann <em>identisch</em> bleiben — nur das CSS ändert sich.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="H-c">
+            <label for="H-c" class="task-label">c)</label>
+            <span class="task-content"><strong>Ausblick:</strong> Schaut euch die <a href="https://getbootstrap.com/docs/5.3/layout/grid/" target="_blank" rel="noopener">Bootstrap-Grid-Doku</a> an. Findet die Klassennamen <code>row</code>, <code>col</code>, <code>col-6</code>, <code>col-4</code> — und erkennt, dass Bootstrap im Kern genau das macht, was ihr gerade selbst geschrieben habt. <strong>Welcher Vorteil</strong> entsteht durch vorgefertigte Klassen?</span>
+          </li>
+        </ol>
+
+        <div class="callout reflect">
+          <span class="callout-label">Mini-Reflexion</span>
+          Heute baut man Spalten meist mit <code>display: flex</code> oder <code>display: grid</code> — moderner und robuster, mit weniger Tücken. <code>float</code> versteht ihr aber, weil es <em>jahrzehntelang</em> das Standardwerkzeug war und in vielen Bestands-Sites noch lebt. Gleich seht ihr außerdem, wie Bootstrap genau diese Aufgabe in fertige Klassen verpackt.
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: TASK I — Theorie-Quiz -->
+    <section class="slide" data-slide="9" data-title="I · Quiz">
+      <div class="eyebrow">Aufgabe I</div>
+      <div class="task-letter">I</div>
+      <h1 class="slide-title">Output vorhersagen</h1>
+      <p class="subtitle">Notiert eure Vermutung <em>vor</em> dem Ausprobieren — und vergleicht dann im Browser.</p>
+
+      <div class="slide-body">
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>&lt;style&gt;
+  p             { color: gray; }
+  .highlight       { color: red; }
+  #title        { color: blue; }
+  p.highlight      { font-weight: bold; }
+&lt;/style&gt;
+
+&lt;p&gt;Absatz A&lt;/p&gt;
+&lt;p class="highlight"&gt;Absatz B&lt;/p&gt;
+&lt;p id="title" class="highlight"&gt;Absatz C&lt;/p&gt;
+&lt;span class="highlight"&gt;Span D&lt;/span&gt;</pre>
+</div>
+
+        <ol class="tasks" data-task="I">
+          <li>
+            <input type="checkbox" class="task-check" id="I-a">
+            <label for="I-a" class="task-label">a)</label>
+            <span class="task-content">Welche Farbe und Schriftstärke haben die Absätze A, B, C und das Span D?</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="I-b">
+            <label for="I-b" class="task-label">b)</label>
+            <span class="task-content">Absatz C trägt <em>zwei</em> passende Selektoren: <code>#title</code> und <code>.highlight</code>. <strong>Welche Farbe gewinnt?</strong> Warum? (Stichwort: <em>Spezifität</em> — ID schlägt Klasse.)</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="I-c">
+            <label for="I-c" class="task-label">c)</label>
+            <span class="task-content">Gegeben sei diese Box mit <code>width: 200px; padding: 20px; border: 5px solid black; margin: 10px;</code>. <strong>Wie breit ist die Box insgesamt</strong> im Layout (also inkl. Border und Margin)?</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="I-d">
+            <label for="I-d" class="task-label">d)</label>
+            <span class="task-content"><strong>Selektor entschlüsseln:</strong> Was selektiert <code>ul li.aktiv</code>? Und was wäre der Unterschied zu <code>ul, li.aktiv</code>? (Tipp: Leerzeichen = „<em>innerhalb von</em>“, Komma = „<em>oder</em>“.)</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: TASK J — Bonus: Bootstrap -->
+    <section class="slide" data-slide="10" data-title="J · Bootstrap (Bonus)">
+      <div class="eyebrow">Aufgabe J · Bonus</div>
+      <div class="task-letter">J</div>
+      <h1 class="slide-title">Bootstrap: Fertige Klassen statt eigenem CSS</h1>
+      <p class="subtitle">Eure Spalten aus Aufgabe H — diesmal in 5 Minuten, ohne eine Zeile CSS.</p>
+
+      <div class="slide-body">
+        <div class="refs">
+          <span class="refs-label">Bootstrap</span>
+          <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/" target="_blank" rel="noopener">Getting Started</a>
+          <a href="https://getbootstrap.com/docs/5.3/layout/grid/" target="_blank" rel="noopener">Grid</a>
+          <a href="https://getbootstrap.com/docs/5.3/components/alerts/" target="_blank" rel="noopener">Alerts</a>
+          <a href="https://getbootstrap.com/docs/5.3/utilities/spacing/" target="_blank" rel="noopener">Utilities</a>
+        </div>
+
+        <ol class="tasks" data-task="J">
+          <li>
+            <input type="checkbox" class="task-check" id="J-a">
+            <label for="J-a" class="task-label">a)</label>
+            <span class="task-content"><strong>Bootstrap einbinden:</strong> Legt eine neue Datei <code>bootstrap.html</code> mit dem HTML5-Grundgerüst an. Fügt im <code>&lt;head&gt;</code> <em>vor</em> eurem eigenen Stylesheet diese Zeile ein:</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>&lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"&gt;</pre>
+</div>
+<span class="task-content">Das ist ein <strong>CDN-Link</strong>: der Browser lädt das Stylesheet von einem öffentlichen Server. Eure Seite hat damit sofort Zugriff auf alle Bootstrap-Klassen.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="J-b">
+            <label for="J-b" class="task-label">b)</label>
+            <span class="task-content"><strong>Grid statt Float:</strong> Baut die drei Spalten aus Aufgabe H neu — ohne eigene CSS-Datei. Bootstrap bringt drei Klassen mit: <code>container</code> (zentriert), <code>row</code> (Spalten-Zeile) und <code>col-md-4</code> (eine Spalte, die auf mittleren Bildschirmen 4 von 12 Rastereinheiten breit ist).</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>&lt;div class="container"&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="col-md-4"&gt;
+      &lt;div class="card p-3"&gt;Spalte 1&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="col-md-4"&gt;
+      &lt;div class="card p-3"&gt;Spalte 2&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="col-md-4"&gt;
+      &lt;div class="card p-3"&gt;Spalte 3&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+</div>
+<span class="task-content"><strong>Verkleinert das Browserfenster.</strong> Was passiert mit den Spalten unter ca. 768 px Breite? Das ist <em>responsive design</em> — bei Bootstrap frei Haus.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="J-c">
+            <label for="J-c" class="task-label">c)</label>
+            <span class="task-content"><strong>Fertige Komponente:</strong> Fügt oberhalb des Grids einen blauen Hinweiskasten ein:</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>&lt;div class="alert alert-primary" role="alert"&gt;
+  Hinweis: Bootstrap bringt fertige Bauteile mit.
+&lt;/div&gt;</pre>
+</div>
+<span class="task-content">Probiert auch <code>alert-success</code>, <code>alert-warning</code>, <code>alert-danger</code>. Das sind keine Farben, die ihr selbst wählt — das sind <em>semantische</em> Klassen.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="J-d">
+            <label for="J-d" class="task-label">d)</label>
+            <span class="task-content"><strong>Utility-Klassen:</strong> Stylt eine Überschrift komplett über Klassen — ganz <em>ohne</em> eigene CSS-Datei:</span>
+<div class="code-wrap">
+<button class="copy-btn" type="button">copy</button>
+<pre>&lt;h1 class="text-center text-primary mt-5 mb-3"&gt;Hallo Bootstrap!&lt;/h1&gt;
+&lt;button class="btn btn-primary"&gt;Klick mich&lt;/button&gt;</pre>
+</div>
+<span class="task-content">Entschlüsselt die Klassen mit der <a href="https://getbootstrap.com/docs/5.3/utilities/spacing/" target="_blank" rel="noopener">Spacing-Doku</a>: <code>mt-5</code> = <em>margin-top, Stufe 5</em>; <code>mb-3</code> = <em>margin-bottom, Stufe 3</em>; <code>p-3</code> = <em>padding rundum, Stufe 3</em>. Das Schema gilt für <em>alle</em> Bootstrap-Klassen.</span>
+          </li>
+          <li>
+            <input type="checkbox" class="task-check" id="J-e">
+            <label for="J-e" class="task-label">e)</label>
+            <span class="task-content"><strong>Reflexion:</strong> Vergleicht <code>bootstrap.html</code> mit eurer Lösung aus Aufgabe H. <strong>Wieviel CSS</strong> habt ihr eingespart? Und: <em>Warum lohnt es sich trotzdem</em>, die CSS-Grundlagen aus diesem Blatt verstanden zu haben — auch wenn man später nur noch Frameworks nutzt?</span>
+          </li>
+        </ol>
+
+<div class="preview">
+  <div class="demo-bs">
+    <h1 class="demo-bs-h1">Hallo Bootstrap!</h1>
+    <div class="demo-bs-alert">Hinweis: Bootstrap bringt fertige Bauteile mit.</div>
+    <div class="demo-bs-row">
+      <div class="demo-bs-col"><div class="demo-bs-card">Spalte 1</div></div>
+      <div class="demo-bs-col"><div class="demo-bs-card">Spalte 2</div></div>
+      <div class="demo-bs-col"><div class="demo-bs-card">Spalte 3</div></div>
+    </div>
+    <div style="text-align: center;">
+      <span class="demo-bs-btn">Klick mich</span>
+    </div>
+  </div>
+</div>
+
+        <div class="callout hint">
+          <span class="callout-label">Zwei Philosophien, ein Prinzip</span>
+          <a href="https://getbootstrap.com/" target="_blank" rel="noopener">Bootstrap</a> liefert <em>Komponenten</em> (Card, Alert, Navbar) und ein Grid-System. <a href="https://tailwindcss.com/" target="_blank" rel="noopener">Tailwind</a> verfolgt einen <em>utility-first</em>-Ansatz (eine Klasse pro Eigenschaft, z. B. <code>p-4 text-center bg-blue-500</code>). Beide ersetzen kein CSS-Wissen — sie bauen darauf auf, was ihr heute gelernt habt.
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: END -->
+    <section class="slide end-slide" data-slide="11" data-title="Geschafft">
+      <div class="eyebrow">Ziel der Sitzung</div>
+      <h1 class="slide-title">Was ihr jetzt könnt</h1>
+      <p class="subtitle">Basis für CSS-Frameworks &amp; alles, was danach kommt.</p>
+
+      <div class="end-grid">
+        <div class="end-card">
+          <div class="check">✓</div>
+          <p>CSS sauber an HTML binden (extern!) und das Prinzip <em>Separation of Concerns</em> erklären.</p>
+        </div>
+        <div class="end-card">
+          <div class="check">✓</div>
+          <p>Mit Typ-, Klassen- und ID-Selektoren gezielt Elemente auswählen und gestalten.</p>
+        </div>
+        <div class="end-card">
+          <div class="check">✓</div>
+          <p>Farben, Einheiten und das Box-Modell (margin, padding, border) bewusst einsetzen.</p>
+        </div>
+        <div class="end-card">
+          <div class="check">✓</div>
+          <p>Elemente mit <code>position</code> und <code>float</code> aus dem normalen Fluss nehmen — und ein einfaches Spalten-Layout selbst bauen.</p>
+        </div>
+      </div>
+
+      <div class="callout hint" style="margin-top: 32px;">
+        <span class="callout-label">Ausblick — nächste Sitzungen</span>
+        Mit der Bonusaufgabe habt ihr <a href="https://getbootstrap.com/" target="_blank" rel="noopener">Bootstrap</a> bereits gestreift — in den kommenden Sitzungen geht es weiter mit <strong>JavaScript</strong>, also dem dritten Bestandteil neben HTML und CSS. Damit werden Seiten <em>interaktiv</em>: Klicks, Eingaben, dynamische Inhalte. Die Trennung von Inhalt (HTML), Form (CSS) und Verhalten (JavaScript) ist die Grundarchitektur jeder modernen Website.
+      </div>
+
+      <div style="margin-top: 32px;">
+        <button class="reset-link" id="reset-btn">Fortschritt zurücksetzen</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER NAV -->
+  <footer class="nav">
+    <button class="nav-btn" id="prev-btn">← Zurück</button>
+    <div class="dots" id="dots"></div>
+    <button class="nav-btn" id="next-btn">Weiter →</button>
+  </footer>
+
+</div>
+
+<script src="../assets/js/main.js"></script>
+
+</body>
+</html>
