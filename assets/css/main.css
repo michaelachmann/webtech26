@@ -337,6 +337,62 @@ ol.tasks > li.done .task-content { opacity: 0.65; }
 }
 .copy-btn.copied { color: #86EFAC; border-color: #86EFAC; }
 
+/* ---------- Side-by-side: code left, preview right ---------- */
+.demo-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+  margin: 18px 0 28px;
+}
+.demo-split > .code-wrap,
+.demo-split > .preview {
+  margin: 0;
+  height: 100%;
+}
+.demo-split > .preview {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+@media (max-width: 720px) {
+  .demo-split { grid-template-columns: 1fr; }
+}
+
+/* ---------- Live preview block ---------- */
+.preview {
+  position: relative;
+  margin: 20px 0 32px;
+  padding: 32px 20px 22px;
+  border: 1px dashed var(--rule);
+  border-radius: 4px;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      #FAFAFA 0 8px,
+      #F4F4F4 8px 16px
+    );
+  /* Reset font for the rendered demo so it shows what the student's browser would render */
+  font-family: var(--font-body);
+  color: var(--ink);
+}
+.preview::before {
+  content: 'Vorschau';
+  position: absolute;
+  top: 0;
+  left: 14px;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--surface);
+  padding: 2px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+
 /* ---------- Callout boxes ---------- */
 .callout {
   margin: 20px 0;
