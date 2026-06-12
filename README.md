@@ -30,16 +30,26 @@ Live: **[webtech26.github.io](https://webtech26.github.io)** *(URL nach Deployme
 │   └── js/main.js          Gemeinsame Logik (Navigation, Fortschritt, Copy)
 ├── blatt1/index.html       Übungsblatt 01 — HTML-Grundlagen
 ├── blatt2/index.html       Übungsblatt 02 — HTML & CSS
+├── blatt3/                 Übungsblatt 03 — JavaScript I (eigenständiges Template)
+│   ├── index.html          Aufgabenblatt (100 % Browser-Konsole)
+│   └── js/
+│       ├── script.js       Startdatei (lädt automatisch)
+│       └── script.solution.js  Musterlösung der Todo-Logik (Aufgabe J)
 └── .github/workflows/
     └── pages.yml           GitHub Actions Deployment
 ```
+
+> **Hinweis:** Übungsblatt 03 nutzt bewusst ein **eigenständiges Template**
+> (eigenes Inline-CSS, externe `js/script.js`) statt des geteilten Slide-Systems
+> aus `assets/`. Es ist eine durchscrollbare Seite, weil hier zu 100 % in der
+> Browser-Konsole gearbeitet wird.
 
 ## Technisches
 
 - Reines HTML/CSS/JS — kein Build-Schritt, keine Abhängigkeiten
 - Deployment über GitHub Actions auf GitHub Pages (Branch `main`)
 - Lernfortschritt wird per `localStorage` im Browser gespeichert (kein Server, keine Cookies)
-- Fonts: [Fraunces](https://fonts.google.com/specimen/Fraunces), [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans), [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) via Google Fonts
+- Fonts: [Fraunces](https://fonts.google.com/specimen/Fraunces), [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans), [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) — **selbst gehostet** unter `assets/fonts/` (woff2, latin + latin-ext), eingebunden über `assets/css/fonts.css`. Kein Google-CDN-Request, kein Drittanbieter (SIL OFL 1.1, siehe `assets/fonts/LICENSE.txt`).
 
 ## Neues Übungsblatt anlegen
 
