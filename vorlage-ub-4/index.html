@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meine Todo-Liste</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Die Oberfläche der Todo-App (Aufgabe B).
+       Wichtig sind die id-Attribute: an ihnen „packt" das JavaScript
+       (js/script.js) die einzelnen Elemente. Die <ul> ist absichtlich
+       leer – ihre Einträge erzeugt renderTodos() aus den Daten. -->
+  <main>
+    <h1>Meine Todo-Liste</h1>
+
+    <div class="add-row">
+      <input id="todo-input" type="text" placeholder="Was ist zu tun?">
+      <button id="add-btn">Hinzufügen</button>
+    </div>
+
+    <ul id="todo-list"></ul>
+
+    <p id="status"></p>
+  </main>
+
+  <!-- Das <script> steht am Ende des <body>, damit die Elemente oben
+       beim Ausführen schon geladen (und auswählbar) sind. -->
+  <script src="js/script.js"></script>
+</body>
+</html>

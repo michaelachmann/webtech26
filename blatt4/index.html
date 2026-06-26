@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webtechnologien — Übungsblatt 04 · JavaScript II</title>
+  <!-- Selbst gehostete Kurs-Schriften (wie Blatt 01–03), kein externer Request:
+       Fraunces für Überschriften, JetBrains Mono für Code. Lese-Serif &
+       JS-Gelb bleiben wie in ÜB3. -->
+  <link rel="stylesheet" href="../assets/css/fonts.css">
+  <style>
+    :root {
+      --ink:    #15151a;
+      --muted:  #6b6b73;
+      --paper:  #ffffff;
+      --line:   #e6e6e0;
+      --accent: #f0db4f;   /* JS-Gelb, sparsam als Akzent */
+      --warn-bg:   #fff6ed;
+      --warn-line: #d96a1f;
+      --warn-ink:  #8a3c0b;
+      --chip-bg:   #f4f4f1;
+      --py-bg:     #eef3fb;
+      --py-line:   #3b6fb5;
+      --py-ink:    #234a78;
+      --ok:        #2f9e57;
+      --ok-bg:     #eef7f0;
+      --ok-line:   #bcdcc6;
+      --con-bg:    #1b1b22;
+      --con-fg:    #e8e8ea;
+      --con-in:    #ffffff;
+      --con-out:   #8e8e98;
+      --con-cmt:   #7fb98a;
+      --con-str:   #f0db4f;
+      /* Geteilte Schriftfamilie, eigener Lese-Serif */
+      --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+      --font-body:    "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+      --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background-color: var(--paper);
+      background-image: radial-gradient(circle, #e9e9e3 1px, transparent 1px);
+      background-size: 22px 22px;
+      font-family: var(--font-body);
+      line-height: 1.6;
+      display: flex;
+      justify-content: center;
+      padding: 4vh 20px 12vh;
+    }
+
+    main { width: 100%; max-width: 680px; }
+
+    /* gestaffeltes Einblenden — nur im Kopfbereich */
+    .reveal { opacity: 0; transform: translateY(10px); animation: rise .6s ease forwards; }
+    .reveal:nth-child(1) { animation-delay: .05s; }
+    .reveal:nth-child(2) { animation-delay: .18s; }
+    .reveal:nth-child(3) { animation-delay: .31s; }
+    .reveal:nth-child(4) { animation-delay: .44s; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { animation: none; opacity: 1; transform: none; }
+    }
+
+    /* ── Marken-Kopf (wie Blatt 01–03) ───────────────────────────── */
+    header.top {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+      padding-bottom: 16px; margin-bottom: 30px;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      font-family: var(--font-display); font-size: 15px; font-weight: 500;
+      color: var(--ink); text-decoration: none; display: block;
+    }
+    .brand .course { font-style: italic; }
+    .brand .sep { color: var(--muted); margin: 0 6px; }
+    .brand:hover .course { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+    .brand-sub {
+      display: block; font-family: var(--font-mono); font-size: 11px;
+      color: var(--muted); letter-spacing: .03em; margin-top: 4px;
+    }
+    .progress-readout {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .progress-bar { width: 116px; height: 6px; background: var(--line); border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0; background: var(--ink); border-radius: 999px; transition: width .35s ease; }
+
+    .badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px; border-radius: 7px;
+      background: var(--ink); color: var(--accent);
+      font-family: var(--font-mono);
+      font-weight: 700; font-size: 15px; letter-spacing: .5px;
+    }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin: 16px 0 4px;
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: 2.5rem; line-height: 1.1; margin: 0 0 6px; font-weight: 600;
+    }
+    h1 .mark {
+      background: linear-gradient(transparent 62%, var(--accent) 62%);
+      padding: 0 .08em;
+    }
+    .lede { color: var(--muted); font-size: 1.08rem; margin: 0; }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 26px 28px;
+      margin-top: 28px;
+      box-shadow: 0 1px 0 rgba(0,0,0,.02), 0 18px 40px -28px rgba(0,0,0,.25);
+      transition: border-color .2s ease;
+    }
+    .card h2 {
+      font-family: var(--font-display);
+      font-size: 1.2rem; margin: 0 0 10px; font-weight: 600;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .card p { margin: 0 0 16px; }
+    .card p:last-child { margin-bottom: 0; }
+    code, kbd { font-family: var(--font-mono); }
+    code {
+      background: var(--chip-bg); border-radius: 5px;
+      padding: 1px 6px; font-size: .88em;
+      overflow-wrap: anywhere;
+    }
+
+    ol, ul { margin: 0; padding-left: 1.3em; }
+    ol li, ul li { margin-bottom: 8px; }
+    ol li:last-child, ul li:last-child { margin-bottom: 0; }
+
+    kbd {
+      display: inline-block;
+      background: var(--paper); border: 1px solid #cfcfc7;
+      border-bottom-width: 2px; border-radius: 6px;
+      padding: 2px 8px; font-size: .8em; line-height: 1.4;
+      color: var(--ink); white-space: nowrap;
+    }
+
+    /* ── Arbeitsablauf-Schritte ──────────────────────────────────── */
+    .flow { list-style: none; padding: 0; margin: 0; counter-reset: step; }
+    .flow li {
+      position: relative; padding-left: 40px; margin-bottom: 14px; counter-increment: step;
+    }
+    .flow li:last-child { margin-bottom: 0; }
+    .flow li::before {
+      content: counter(step); position: absolute; left: 0; top: -1px;
+      width: 26px; height: 26px; border-radius: 7px;
+      background: var(--ink); color: var(--accent);
+      font-family: var(--font-mono); font-weight: 700; font-size: 13px;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+
+    .shortcuts {
+      margin-top: 16px; border-top: 1px dashed var(--line); padding-top: 16px;
+    }
+    .shortcuts .row {
+      display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+      font-size: .95rem; margin-bottom: 8px;
+    }
+    .shortcuts .row:last-child { margin-bottom: 0; }
+    .browser { font-weight: 600; min-width: 74px; }
+    .sep { color: var(--muted); }
+
+    .warn {
+      margin-top: 28px;
+      background: var(--warn-bg);
+      border-left: 4px solid var(--warn-line);
+      border-radius: 0 10px 10px 0;
+      padding: 16px 20px; color: var(--warn-ink);
+    }
+    .warn strong { display: block; margin-bottom: 3px; }
+
+    .footnote {
+      margin-top: 26px; font-size: .92rem; color: var(--muted);
+      font-family: var(--font-mono);
+    }
+
+    /* ── Aufgaben-Nummer ─────────────────────────────────────────── */
+    .num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px; border-radius: 8px; flex: none;
+      background: var(--accent); color: var(--ink);
+      font-family: var(--font-mono); font-weight: 700; font-size: 15px;
+      transition: background .2s ease, color .2s ease;
+    }
+    .meta-time {
+      font-family: var(--font-mono);
+      font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--muted); margin: 0 0 14px;
+    }
+
+    /* ── MDN-Doku-Links ──────────────────────────────────────────── */
+    .refs {
+      display: flex; flex-wrap: wrap; align-items: baseline; gap: 7px 9px;
+      margin: 0 0 18px; font-family: var(--font-mono); font-size: 12px;
+    }
+    .refs-label {
+      font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .refs a {
+      color: var(--ink); text-decoration: none;
+      border-bottom: 2px solid var(--accent); padding-bottom: 1px;
+      transition: background .15s ease;
+    }
+    .refs a:hover { background: var(--accent); }
+
+    /* ── Konsolen-Block (REPL: › Eingabe / ‹ Ausgabe) ────────────── */
+    .console, .codefile {
+      font-family: var(--font-mono);
+      font-size: .85rem; line-height: 1.7;
+      background: var(--con-bg); color: var(--con-fg);
+      border-radius: 10px; padding: 14px 16px; margin: 0 0 16px;
+      overflow-x: auto;
+    }
+    .console .cl-label, .codefile .fl-label {
+      display: block; font-size: 10px; letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .console .cl-label { color: #5b5b66; }
+    .console .in, .console .out, .console .cmt,
+    .codefile .ln, .codefile .cmt { display: block; white-space: pre; }
+    .console .in  { color: var(--con-in); }
+    .console .in::before  { content: "› "; color: #5b6cff; }
+    .console .out { color: var(--con-out); }
+    .console .out::before { content: "‹ "; color: #4a4a55; }
+    .console .cmt, .codefile .cmt { color: var(--con-cmt); }
+    .console .str, .codefile .str { color: var(--con-str); }
+
+    /* ── Datei-Block (das schreibst du in eine Datei) ────────────── */
+    .codefile { border-left: 3px solid var(--accent); }
+    .codefile .fl-label { color: #c9b94a; }
+    .codefile .ln { color: var(--con-fg); }
+    /* HTML-Datei-Variante: blauer Rand zur Unterscheidung von JS */
+    .codefile.html { border-left-color: var(--py-line); }
+    .codefile.html .fl-label { color: #8fb3e6; }
+
+    /* ── Seiten-Vorschau („So sieht die Seite aus") ──────────────── */
+    .screen {
+      border: 1px solid var(--line); border-radius: 12px;
+      background: #fff; padding: 16px 18px; margin: 0 0 16px;
+      box-shadow: 0 10px 30px -24px rgba(0,0,0,.35);
+    }
+    .screen-label {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--muted);
+      display: block; margin-bottom: 12px;
+    }
+    .screen h3 { font-family: var(--font-display); margin: 0 0 12px; font-size: 1.25rem; font-weight: 600; }
+    .screen .add-row { display: flex; gap: 8px; margin-bottom: 14px; }
+    .screen .add-row input {
+      flex: 1; padding: 7px 11px; border: 1px solid var(--line);
+      border-radius: 8px; font-family: var(--font-body); font-size: .95rem; color: var(--muted);
+    }
+    .screen .add-row button {
+      padding: 7px 16px; border: none; border-radius: 8px;
+      background: var(--ink); color: var(--accent);
+      font-family: var(--font-mono); font-size: .82rem; cursor: default; white-space: nowrap;
+    }
+    .screen ul.mock { list-style: none; padding: 0; margin: 0; }
+    .screen ul.mock li {
+      padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px;
+      margin-bottom: 7px; font-size: .98rem; cursor: default;
+    }
+    .screen ul.mock li::before { content: "○ "; color: var(--muted); }
+    .screen ul.mock li.done { text-decoration: line-through; color: var(--muted); background: var(--ok-bg); border-color: var(--ok-line); }
+    .screen ul.mock li.done::before { content: "✓ "; color: var(--ok); text-decoration: none; }
+    .screen .stat { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); margin: 10px 0 0; }
+
+    /* ── „Probier es aus" ────────────────────────────────────────── */
+    .try {
+      margin-top: 16px;
+      border-top: 1px dashed var(--line);
+      padding-top: 16px;
+    }
+    .try-label {
+      font-family: var(--font-mono);
+      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--warn-line); font-weight: 700;
+      display: block; margin-bottom: 10px;
+    }
+
+    /* ── Python-/DH-Vergleich ────────────────────────────────────── */
+    .py {
+      margin-top: 18px;
+      background: var(--py-bg);
+      border-left: 4px solid var(--py-line);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px; color: var(--py-ink);
+      font-size: .96rem;
+    }
+    .py strong { display: block; margin-bottom: 3px; }
+    .py code { background: rgba(59,111,181,.12); }
+
+    /* ── Hinweis (neutral) ───────────────────────────────────────── */
+    .hint {
+      margin-top: 16px;
+      background: var(--chip-bg);
+      border-radius: 10px;
+      padding: 14px 18px; font-size: .96rem; color: var(--ink);
+    }
+    .hint strong { color: var(--warn-ink); }
+
+    /* ── Aufgabe-erledigt-Schalter (Fortschritt) ─────────────────── */
+    .aufgabe-done {
+      display: inline-flex; align-items: center; gap: 9px;
+      margin-top: 20px; padding: 8px 15px;
+      border: 1px solid var(--line); border-radius: 999px;
+      font-family: var(--font-mono); font-size: 12px; letter-spacing: .03em;
+      color: var(--muted); cursor: pointer; user-select: none;
+      transition: background .2s ease, border-color .2s ease, color .2s ease;
+    }
+    .aufgabe-done input { width: 15px; height: 15px; margin: 0; accent-color: var(--ok); cursor: pointer; }
+    .aufgabe-done:hover { border-color: #bdbdb5; color: var(--ink); }
+    .card.is-done { border-color: var(--ok-line); }
+    .card.is-done .num { background: var(--ok); color: #fff; }
+    .card.is-done .aufgabe-done { background: var(--ok-bg); border-color: var(--ok-line); color: #2f7a4e; }
+
+    /* ── Block-Trenner ───────────────────────────────────────────── */
+    .divider { margin: 48px 0 8px; text-align: center; }
+    .divider .line { border: none; border-top: 2px dashed var(--warn-line); margin: 0 0 14px; }
+    .divider .label {
+      font-family: var(--font-mono);
+      font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--warn-ink); background: var(--warn-bg);
+      border: 1px solid var(--warn-line);
+      border-radius: 999px; padding: 6px 16px; display: inline-block;
+    }
+    .divider p { color: var(--muted); font-size: .95rem; margin: 12px 0 0; }
+
+    .part-head { margin: 40px 0 0; }
+    .part-head .kicker {
+      font-family: var(--font-mono);
+      font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin: 0 0 4px;
+    }
+    .part-head h2 { font-family: var(--font-display); font-size: 1.7rem; margin: 0; font-weight: 600; }
+
+    /* ── Bonus-Karte ─────────────────────────────────────────────── */
+    .card.bonus {
+      border: 2px solid transparent;
+      background:
+        linear-gradient(var(--paper), var(--paper)) padding-box,
+        linear-gradient(135deg, var(--accent), #d9c43f) border-box;
+    }
+    .card.bonus h2 .num { background: var(--ink); color: var(--accent); }
+
+    /* ── Schluss-Karte ───────────────────────────────────────────── */
+    .done {
+      margin-top: 34px; text-align: center;
+      border: 1px solid var(--line); border-radius: 14px;
+      padding: 30px 28px; background: var(--paper);
+    }
+    .done h2 { font-family: var(--font-display); justify-content: center; }
+    .done .checks { text-align: left; display: inline-block; margin: 8px auto 0; padding-left: 0; }
+    .done .checks li { list-style: none; margin-bottom: 8px; }
+    .done .checks li::before { content: "✓ "; color: var(--ok); font-weight: 700; }
+    .reset-link {
+      margin-top: 22px; background: none; border: none;
+      font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+      text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+    }
+    .reset-link:hover { color: var(--warn-line); }
+
+    /* ── Fuß ─────────────────────────────────────────────────────── */
+    footer.site-foot {
+      margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line);
+      text-align: center; font-family: var(--font-mono);
+      font-size: 12px; letter-spacing: .04em; color: var(--muted);
+    }
+    footer.site-foot a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line); }
+    footer.site-foot a:hover { color: var(--ink); border-color: var(--ink); }
+    footer.site-foot .sep { margin: 0 10px; }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 2rem; }
+      .card { padding: 22px 20px; }
+      .progress-readout { font-size: 10px; }
+    }
+  </style>
+</head>
+<body data-storage-key="webtech-js2-ub-progress-v1">
+  <main>
+    <!-- Marken-Kopf + Fortschritt -->
+    <header class="top reveal">
+      <div class="brand-group">
+        <a href="../" class="brand">
+          <span class="course">Webtechnologien</span>
+          <span class="sep">·</span><span>SoSe 2026</span>
+          <span class="sep">·</span><span>Übungsblatt 04</span>
+        </a>
+        <span class="brand-sub">Lehrstuhl für Medieninformatik · Universität Regensburg · M. Achmann-Denkler &amp; C. Helmig</span>
+      </div>
+      <div class="progress-readout">
+        <span id="progress-text">0 / 8 Aufgaben</span>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      </div>
+    </header>
+
+    <header class="reveal">
+      <span class="badge">JS</span>
+      <p class="eyebrow">Übungsblatt 04 · JavaScript II</p>
+      <h1>Das DOM – <span class="mark">die Seite zum Leben erwecken</span></h1>
+      <p class="lede">In Blatt&nbsp;03 hast du das <strong>„Gehirn"</strong> der Todo-Liste
+        gebaut – Daten und Funktionen, deren Ausgabe in der <em>Konsole</em> landete.
+        Heute geben wir ihm ein <strong>Gesicht</strong>: Mit <em>DOM-Manipulation</em>
+        und <em>Events</em> verbindest du deinen Code mit der sichtbaren Seite. Aus
+        <code>console.log</code> wird eine echte, klickbare Liste.</p>
+    </header>
+
+    <section class="warn reveal">
+      <strong>⚠️ Bitte Firefox oder Chrome verwenden!</strong>
+      Wir setzen einen dieser beiden Browser voraus. Du arbeitest am selben
+      Projekt wie in Blatt&nbsp;03 weiter (die Dateien <code>index.html</code> und
+      <code>js/script.js</code>). Hast du sie nicht mehr, lade dir die Vorlage von
+      GRIPS neu herunter.
+    </section>
+
+    <!-- ───────────────────────── Arbeitsablauf ───────────────────── -->
+    <section class="card">
+      <h2>🛠 Dein Arbeitsablauf — jetzt mit Blick auf die Seite</h2>
+      <p>Der Ablauf bleibt wie gewohnt: schreiben → speichern → <kbd>F5</kbd>.
+        <strong>Neu ist nur, wohin du schaust:</strong> Bis Blatt&nbsp;03 lag die
+        Ausgabe in der <em>Konsole</em>. Ab heute passiert das Meiste direkt auf
+        der <strong>Seite</strong> selbst. Die Konsole bleibt trotzdem offen –
+        dort erscheinen Fehlermeldungen, wenn etwas klemmt.</p>
+      <ol class="flow">
+        <li>Öffne den Projektordner in VS&nbsp;Code (<code>index.html</code> + <code>js/script.js</code>).</li>
+        <li>Schreib deinen Code in die jeweilige Datei.</li>
+        <li>Speichern: <kbd>Strg</kbd>+<kbd>S</kbd> &nbsp;(Mac: <kbd>⌘</kbd>+<kbd>S</kbd>).</li>
+        <li>Im Browser neu laden: <kbd>F5</kbd>.</li>
+        <li>Ergebnis auf der <strong>Seite</strong> ansehen – Fehler in der <strong>Konsole</strong>.</li>
+      </ol>
+      <div class="hint">
+        <strong>Heute wird in zwei Dateien gearbeitet:</strong> Kästen mit blauem Rand
+        und dem Namen <code>index.html</code> gehören in deine HTML-Datei. Kästen mit
+        gelbem Rand (<code>js/script.js</code>) wie bisher in dein JavaScript. Dunkle
+        Kästen mit <code>›</code> sind Konsolen-Eingaben zum schnellen Ausprobieren.
+      </div>
+    </section>
+
+    <!-- ───────────────────────── So nutzt du das Blatt ───────────── -->
+    <section class="card">
+      <h2>🧭 So nutzt du dieses Blatt</h2>
+      <p>Das Blatt ist das größte des Kurses und über <strong>mehrere Sitzungen</strong>
+        angelegt – lass dich von der Länge nicht abschrecken. Jede Aufgabe hat eine
+        kurze Erklärung, ein Beispiel und einen <strong>„Probier es aus"</strong>-Teil.
+        Hak Erledigtes unten ab; dein Fortschritt bleibt im Browser gespeichert.</p>
+      <ul>
+        <li><strong>Teil 1 (A–B)</strong> – heute: Wir bauen die <em>Oberfläche</em> und
+          machen die ersten Schritte mit dem DOM. Vorher gibt es Wiederholung und den
+          Theorie-Input.</li>
+        <li><strong>Teil 2 (C–E)</strong> – nächste Woche: Wir verbinden die <em>Daten</em>
+          aus dem Gehirn mit der Oberfläche, sodass die Liste auf der Seite erscheint.</li>
+        <li><strong>Teil 3 (F–H)</strong> – die <em>Events</em>: Die Seite reagiert auf
+          Klicks und Eingaben. Danach ist die App fertig benutzbar.</li>
+        <li>Der <strong>★ Klausur-Bonus</strong> ganz unten sind drei eigenständige
+          Übungen mit <em>Klausurcharakter</em>.</li>
+      </ul>
+      <div class="py">
+        <strong>🐢🐇 Zwei Geschwindigkeiten</strong>
+        Das Pensum ist großzügig bemessen. <strong>Digital Law (LL.B.):</strong> Wir
+        nehmen uns Zeit und haben einen zusätzlichen Übungstermin – sauberes
+        Verstehen geht vor Tempo. <strong>Digital Humanities:</strong> Ihr seid aus
+        Blatt&nbsp;03 schon im Stoff und kommt vermutlich schneller voran – nehmt
+        euch dann den Klausur-Bonus vor.
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════ TEIL 1 ═════════════════════════ -->
+    <div class="part-head">
+      <p class="kicker">Teil 1 · Heute (26. Juni) — erste Schritte</p>
+      <h2>Die Oberfläche &amp; das DOM</h2>
+    </div>
+    <p style="color:var(--muted); font-size:.95rem; margin:10px 0 0;">
+      Erst der Theorie-Input zu DOM &amp; Events, dann diese beiden Aufgaben als
+      <strong>erste Gehversuche</strong>. Mehr wird heute nicht erwartet – der Rest
+      folgt nächste Woche.</p>
+
+    <!-- A · Was ist das DOM? ───────────────────────────────────────── -->
+    <section class="card" data-aufgabe="A">
+      <h2><span class="num">A</span> Das DOM anfassen: die Seite live verändern</h2>
+      <p class="meta-time">Der Aha-Moment · 10 Min</p>
+      <p class="refs"><span class="refs-label">MDN</span>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/Document_Object_Model/Introduction" target="_blank" rel="noopener">Was ist das DOM?</a>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/Document/querySelector" target="_blank" rel="noopener">querySelector()</a>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/Element/innerHTML" target="_blank" rel="noopener">innerHTML</a></p>
+      <p>Der Browser baut aus deinem HTML einen <strong>Baum</strong> aus Elementen –
+        das <strong>DOM</strong> (Document Object Model). Das globale Objekt
+        <code>document</code> ist dein Zugang zu diesem Baum. Mit
+        <code>document.querySelector("…")</code> wählst du ein Element aus –
+        <em>genau mit einem CSS-Selektor</em>, wie du sie aus Blatt&nbsp;02 kennst.</p>
+      <p>Das Beste zum Einstieg: Öffne deine <code>index.html</code> aus Blatt&nbsp;03
+        im Browser, öffne die Konsole (<kbd>F12</kbd>) und ändere die Seite
+        <strong>live</strong> – ohne die Datei anzufassen:</p>
+      <div class="console">
+        <span class="cl-label">Konsole</span>
+        <span class="cmt">// das erste &lt;h1&gt; der Seite holen</span>
+        <span class="in">let titel = document.querySelector("h1")</span>
+        <span class="cmt">// seinen Inhalt auslesen …</span>
+        <span class="in">titel.innerHTML</span>
+        <span class="out">'JavaScript – erste Schritte'</span>
+        <span class="cmt">// … und überschreiben — schau auf die Seite!</span>
+        <span class="in">titel.innerHTML = "Ich verändere die Seite!"</span>
+        <span class="out">'Ich verändere die Seite!'</span>
+      </div>
+      <p>Die Überschrift auf der Seite ändert sich sofort. <code>innerHTML</code> ist
+        der Inhalt eines Elements – du kannst ihn lesen <em>und</em> setzen. (Beim
+        Neuladen mit <kbd>F5</kbd> ist alles wieder beim Alten – wir haben ja nur
+        die <em>Anzeige</em> verändert, nicht die Datei.)</p>
+      <div class="hint">
+        <strong>Faustregel:</strong> DOM-Arbeit sind fast immer <em>zwei Schritte</em> –
+        erst ein Element <strong>auswählen</strong> und in einer Variable merken,
+        dann seine <strong>Eigenschaften verändern</strong>.
+      </div>
+      <div class="try">
+        <span class="try-label">Probier es aus</span>
+        <ol>
+          <li>Hol dir mit <code>querySelector</code> ein <code>&lt;p&gt;</code> der Seite
+            und überschreib sein <code>innerHTML</code>.</li>
+          <li>Probier statt <code>innerHTML</code> einmal
+            <code>titel.textContent</code> aus. Setz als Inhalt
+            <code>"&lt;b&gt;fett?&lt;/b&gt;"</code> – einmal über <code>innerHTML</code>,
+            einmal über <code>textContent</code>. Wo wird wirklich fett geschrieben,
+            wo erscheinen die spitzen Klammern als Text?</li>
+        </ol>
+      </div>
+      <label class="aufgabe-done"><input type="checkbox" class="aufgabe-check" data-id="A" data-count="1"> Aufgabe A erledigt</label>
+    </section>
+
+    <!-- B · Die Oberfläche bauen ───────────────────────────────────── -->
+    <section class="card" data-aufgabe="B">
+      <h2><span class="num">B</span> Die Oberfläche bauen (HTML ersetzen)</h2>
+      <p class="meta-time">Erste Schritte · 15–20 Min</p>
+      <p class="refs"><span class="refs-label">MDN</span>
+        <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/input" target="_blank" rel="noopener">&lt;input&gt;</a>
+        <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/button" target="_blank" rel="noopener">&lt;button&gt;</a>
+        <a href="https://developer.mozilla.org/de/docs/Web/HTML/Element/ul" target="_blank" rel="noopener">&lt;ul&gt;</a>
+        <a href="https://developer.mozilla.org/de/docs/Web/HTML/Global_attributes/id" target="_blank" rel="noopener">id-Attribut</a></p>
+      <p>Bisher zeigt deine <code>index.html</code> eine Erklärseite. Die brauchen wir
+        nicht mehr – jetzt soll dort die <strong>Todo-App</strong> stehen. Öffne
+        <code>index.html</code> in VS&nbsp;Code und <strong>ersetze den kompletten
+        Inhalt von <code>&lt;body&gt;</code></strong> durch dieses Gerüst:</p>
+      <div class="codefile html">
+        <span class="fl-label">index.html — im &lt;body&gt;</span>
+        <span class="ln">&lt;main&gt;</span>
+        <span class="ln">  &lt;h1&gt;Meine Todo-Liste&lt;/h1&gt;</span>
+        <span class="ln"></span>
+        <span class="ln">  &lt;div class="add-row"&gt;</span>
+        <span class="ln">    &lt;input id="todo-input" type="text" placeholder="Was ist zu tun?"&gt;</span>
+        <span class="ln">    &lt;button id="add-btn"&gt;Hinzufügen&lt;/button&gt;</span>
+        <span class="ln">  &lt;/div&gt;</span>
+        <span class="ln"></span>
+        <span class="ln">  &lt;ul id="todo-list"&gt;&lt;/ul&gt;</span>
+        <span class="ln"></span>
+        <span class="ln">  &lt;p id="status"&gt;&lt;/p&gt;</span>
+        <span class="ln">&lt;/main&gt;</span>
+        <span class="ln"></span>
+        <span class="cmt">&lt;!-- ganz am Ende des &lt;body&gt;, wie gehabt: --&gt;</span>
+        <span class="ln">&lt;script src="js/script.js"&gt;&lt;/script&gt;</span>
+      </div>
+      <p>Wenn du speicherst und neu lädst, sieht die Seite etwa so aus – ein
+        Eingabefeld, ein Knopf und darunter (noch leer) die Liste:</p>
+      <div class="screen">
+        <span class="screen-label">So sieht index.html jetzt aus</span>
+        <h3>Meine Todo-Liste</h3>
+        <div class="add-row">
+          <input type="text" value="Was ist zu tun?" disabled>
+          <button>Hinzufügen</button>
+        </div>
+        <ul class="mock"></ul>
+        <p class="stat">(Liste noch leer – die füllen wir mit JavaScript.)</p>
+      </div>
+      <p>Wichtig sind die <strong><code>id</code>-Attribute</strong>:
+        <code>todo-input</code>, <code>add-btn</code>, <code>todo-list</code> und
+        <code>status</code>. Das sind die <em>Griffe</em>, an denen unser JavaScript
+        gleich die Elemente packt. Die <code>&lt;ul&gt;</code> ist absichtlich leer –
+        ihre Einträge erzeugen wir später aus den Daten.</p>
+      <div class="hint">
+        <strong>Layout egal?</strong> Ja – ob es hübsch aussieht, ist heute zweitrangig.
+        Die Datei <code>css/style.css</code> ist weiterhin verlinkt; verschönern darfst
+        du später jederzeit. Erst die Funktion, dann die Optik.
+      </div>
+      <div class="try">
+        <span class="try-label">Probier es aus</span>
+        <ol>
+          <li>Ersetze den <code>&lt;body&gt;</code>-Inhalt wie oben, speichere und lade neu.
+            Du solltest Feld und Knopf sehen.</li>
+          <li>Tippe etwas ins Feld und klick den Knopf. <em>Es passiert noch nichts</em> –
+            klar, wir haben den Knopf noch nicht „verdrahtet". Genau das holen wir in
+            Teil&nbsp;3 nach.</li>
+          <li>Öffne die Konsole und prüfe mit
+            <code>document.querySelector("#add-btn")</code>, ob dein Knopf gefunden wird.</li>
+        </ol>
+      </div>
+      <label class="aufgabe-done"><input type="checkbox" class="aufgabe-check" data-id="B" data-count="1"> Aufgabe B erledigt</label>
+    </section>
+
+    <!-- ─────────────────────── Block-Schnitt ─────────────────────── -->
+    <div class="divider">
+      <hr class="line">
+      <span class="label">Ende heute · weiter am 3. Juli</span>
+      <p>Das waren die ersten Gehversuche: Du verstehst das DOM als Baum, kannst
+        Elemente auswählen und die Seite verändern – und die Oberfläche der App steht.
+        Nächste Woche verbinden wir die <em>Daten</em> mit dieser Oberfläche. <br>
+        <strong>Digital Law:</strong> guter Haltepunkt – wir vertiefen Teil&nbsp;1
+        beim Übungstermin. <strong>Digital Humanities:</strong> wer mag, liest direkt weiter.</p>
+    </div>
+
+    <!-- ═══════════════════════════ TEIL 2 ═════════════════════════ -->
+    <div class="part-head">
+      <p class="kicker">Teil 2 · Nächste Sitzung — Daten ↔ Oberfläche</p>
+      <h2>Die Liste sichtbar machen</h2>
+    </div>
+    <p style="color:var(--muted); font-size:.95rem; margin:10px 0 0;">
+      Jetzt verbinden wir das <strong>Gehirn</strong> (deine <code>todos</code> und
+      Funktionen aus Blatt&nbsp;03) mit der <strong>Oberfläche</strong> aus Teil&nbsp;1.
+      Ab hier arbeitest du wieder in <code>js/script.js</code>.</p>
+
+    <!-- C · Elemente auswählen ─────────────────────────────────────── -->
+    <section class="card" data-aufgabe="C">
+      <h2><span class="num">C</span> Elemente auswählen und merken</h2>
+      <p class="meta-time">Kernbaustein · 15 Min</p>
+      <p class="refs"><span class="refs-label">MDN</span>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/Document/getElementById" target="_blank" rel="noopener">getElementById()</a>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/Document/querySelector" target="_blank" rel="noopener">querySelector()</a>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/Document/querySelectorAll" target="_blank" rel="noopener">querySelectorAll()</a></p>
+      <p>Damit unser Code die Oberfläche bedienen kann, brauchen wir
+        <strong>Referenzen</strong> auf die wichtigen Elemente. Hol sie dir einmal ganz
+        oben in <code>script.js</code> (unter deiner <code>let todos = []</code>-Zeile)
+        und merke sie in <code>const</code>-Variablen:</p>
+      <div class="codefile">
+        <span class="fl-label">js/script.js</span>
+        <span class="cmt">// die „Griffe" an unsere HTML-Elemente</span>
+        <span class="ln">const input = document.querySelector("#todo-input");</span>
+        <span class="ln">const addBtn = document.querySelector("#add-btn");</span>
+        <span class="ln">const list = document.querySelector("#todo-list");</span>
+        <span class="ln">const status = document.querySelector("#status");</span>
+      </div>
+      <p>Die <code>#</code> heißt „id" – genau wie im CSS. Es gibt mehrere
+        Selektor-Methoden; die wichtigsten:</p>
+      <ul>
+        <li><code>document.getElementById("todo-input")</code> – ein Element über seine id
+          (ohne <code>#</code>).</li>
+        <li><code>document.querySelector("…")</code> – das <em>erste</em> Element, das zum
+          CSS-Selektor passt (<code>"#id"</code>, <code>".klasse"</code>, <code>"li"</code> …).</li>
+        <li><code>document.querySelectorAll("…")</code> – <em>alle</em> passenden Elemente
+          als Liste.</li>
+      </ul>
+      <div class="hint">
+        <strong>Warum oben und in <code>const</code>?</strong> Die Elemente ändern sich
+        nicht – die Variable soll immer auf dasselbe Feld zeigen. Und weil das
+        <code>&lt;script&gt;</code> am Ende des <code>&lt;body&gt;</code> steht, ist die
+        Seite beim Ausführen schon geladen – die Elemente sind also da.
+      </div>
+      <div class="try">
+        <span class="try-label">Probier es aus</span>
+        <ol>
+          <li>Schreib die vier <code>const</code>-Zeilen in <code>script.js</code>, speichere,
+            lade neu.</li>
+          <li>Gib in der Konsole <code>input</code> ein – wird dein Eingabefeld angezeigt?
+            Und <code>list</code>?</li>
+          <li>Tippe etwas ins Feld und lies in der Konsole <code>input.value</code> aus.
+            Das ist der <em>aktuelle Text</em> im Feld – den brauchen wir in Teil&nbsp;3.</li>
+        </ol>
+      </div>
+      <label class="aufgabe-done"><input type="checkbox" class="aufgabe-check" data-id="C" data-count="1"> Aufgabe C erledigt</label>
+    </section>
+
+    <!-- D · Elemente erzeugen & einfügen ───────────────────────────── -->
+    <section class="card" data-aufgabe="D">
+      <h2><span class="num">D</span> Elemente erzeugen und einfügen</h2>
+      <p class="meta-time">Kernbaustein · 15–20 Min</p>
+      <p class="refs"><span class="refs-label">MDN</span>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/Document/createElement" target="_blank" rel="noopener">createElement()</a>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/Element/append" target="_blank" rel="noopener">append()</a>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/Node/textContent" target="_blank" rel="noopener">textContent</a>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/Element/classList" target="_blank" rel="noopener">classList</a></p>
+      <p>Bisher haben wir bestehende Elemente verändert. Jetzt <strong>erzeugen</strong>
+        wir neue – das ist der Trick, um Listeneinträge aus Daten zu bauen. Drei
+        Schritte: Element <em>erstellen</em>, <em>befüllen</em>, in den Baum
+        <em>einhängen</em>. Schreib das testweise ans Ende von <code>script.js</code>:</p>
+      <div class="codefile">
+        <span class="fl-label">js/script.js</span>
+        <span class="cmt">// 1) erstellen — noch nicht sichtbar</span>
+        <span class="ln">let li = document.createElement("li");</span>
+        <span class="cmt">// 2) befüllen</span>
+        <span class="ln">li.textContent = "Mein erster Eintrag";</span>
+        <span class="cmt">// 3) einhängen — jetzt erscheint es in der &lt;ul&gt;</span>
+        <span class="ln">list.append(li);</span>
+      </div>
+      <p>Erst durch <code>list.append(li)</code> wird das neue
+        <code>&lt;li&gt;</code> zum Kind der <code>&lt;ul&gt;</code> und damit sichtbar.
+        Zwei weitere Werkzeuge brauchst du gleich:</p>
+      <ul>
+        <li><code>li.classList.add("done")</code> – hängt dem Element eine CSS-Klasse an
+          (z.&nbsp;B. zum Durchstreichen). Es gibt auch <code>.remove("…")</code> und
+          <code>.toggle("…")</code>.</li>
+        <li><code>list.innerHTML = ""</code> – leert einen Container komplett. Damit
+          räumen wir gleich die alte Liste weg, bevor wir neu zeichnen.</li>
+      </ul>
+      <div class="py">
+        <strong>💡 Warum erst leeren, dann neu bauen?</strong>
+        Unser Ansatz ist bewusst einfach: Sobald sich die Daten ändern, <em>löschen</em>
+        wir die ganze Liste auf der Seite und bauen sie aus dem <code>todos</code>-Array
+        komplett neu auf. So müssen wir nie einzelne Zeilen suchen und ändern – die
+        Daten sind immer die Wahrheit, die Anzeige spiegelt sie nur.
+      </div>
+      <div class="try">
+        <span class="try-label">Probier es aus</span>
+        <ol>
+          <li>Erzeuge wie oben ein <code>&lt;li&gt;</code> und häng es an <code>list</code>.
+            Erscheint es auf der Seite?</li>
+          <li>Gib dem <code>&lt;li&gt;</code> mit <code>li.classList.add("done")</code> eine
+            Klasse. (Sichtbar wird das erst, wenn <code>css/style.css</code> eine
+            <code>.done</code>-Regel hat – z.&nbsp;B.
+            <code>text-decoration: line-through</code>.)</li>
+          <li>Ruf danach <code>list.innerHTML = ""</code> auf. Die Liste ist wieder leer.</li>
+        </ol>
+      </div>
+      <label class="aufgabe-done"><input type="checkbox" class="aufgabe-check" data-id="D" data-count="1"> Aufgabe D erledigt</label>
+    </section>
+
+    <!-- E · renderTodos neu schreiben ──────────────────────────────── -->
+    <section class="card" data-aufgabe="E">
+      <h2><span class="num">E</span> <code>renderTodos()</code> zeichnet jetzt die Seite</h2>
+      <p class="meta-time">Herzstück · 20–25 Min</p>
+      <p class="refs"><span class="refs-label">MDN</span>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/Element/append" target="_blank" rel="noopener">append()</a>
+        <a href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Statements/for" target="_blank" rel="noopener">for</a></p>
+      <p>Jetzt fügt sich Teil&nbsp;2 zusammen. Deine alte <code>renderTodos()</code> aus
+        Blatt&nbsp;03 hat die Liste mit <code>console.log</code> in die Konsole geschrieben.
+        Wir schreiben sie um, sodass sie dieselbe Schleife nutzt – aber statt zu loggen
+        baut sie pro Todo ein <code>&lt;li&gt;</code> und hängt es in die
+        <code>&lt;ul&gt;</code>:</p>
+      <div class="codefile">
+        <span class="fl-label">js/script.js</span>
+        <span class="ln">function renderTodos() {</span>
+        <span class="cmt">  // 1) alte Anzeige wegräumen</span>
+        <span class="ln">  list.innerHTML = "";</span>
+        <span class="ln"></span>
+        <span class="cmt">  // 2) für jedes Todo eine Zeile bauen (wie in Blatt 03!)</span>
+        <span class="ln">  for (let i = 0; i &lt; todos.length; i++) {</span>
+        <span class="ln">    let todo = todos[i];</span>
+        <span class="ln"></span>
+        <span class="ln">    let li = document.createElement("li");</span>
+        <span class="ln">    li.textContent = todo.text;</span>
+        <span class="ln"></span>
+        <span class="cmt">    // erledigte Todos markieren</span>
+        <span class="ln">    if (todo.erledigt) {</span>
+        <span class="ln">      li.classList.add("done");</span>
+        <span class="ln">    }</span>
+        <span class="ln"></span>
+        <span class="ln">    list.append(li);</span>
+        <span class="ln">  }</span>
+        <span class="ln">}</span>
+      </div>
+      <p>Erkennst du die Schleife aus Blatt&nbsp;03 wieder? Nur der <em>Rumpf</em> ist neu:
+        kein <code>console.log</code> mehr, sondern „Element bauen → einhängen". Das
+        <code>todos</code>-Array, <code>addTodo</code> und <code>toggleTodo</code>
+        bleiben <strong>unverändert</strong>. Teste mit ein paar festen Einträgen am Ende
+        der Datei:</p>
+      <div class="codefile">
+        <span class="fl-label">js/script.js — zum Testen</span>
+        <span class="ln">addTodo("Einkaufen gehen");</span>
+        <span class="ln">addTodo("Übungsblatt anschauen");</span>
+        <span class="ln">toggleTodo(1);</span>
+        <span class="ln">renderTodos();</span>
+      </div>
+      <div class="screen">
+        <span class="screen-label">So sieht die Seite jetzt aus</span>
+        <h3>Meine Todo-Liste</h3>
+        <div class="add-row">
+          <input type="text" value="Was ist zu tun?" disabled>
+          <button>Hinzufügen</button>
+        </div>
+        <ul class="mock">
+          <li>Einkaufen gehen</li>
+          <li class="done">Übungsblatt anschauen</li>
+        </ul>
+      </div>
+      <div class="hint">
+        <strong>Streicht nichts durch?</strong> Dann fehlt in <code>css/style.css</code>
+        noch die Regel <code>.done { text-decoration: line-through; color: gray; }</code>.
+        Die Klasse setzt JavaScript – <em>aussehen</em> tut sie erst durch CSS.
+      </div>
+      <div class="try">
+        <span class="try-label">Probier es aus</span>
+        <ol>
+          <li>Schreib die neue <code>renderTodos()</code> und teste mit den festen Einträgen.
+            Erscheint die Liste auf der Seite?</li>
+          <li>Ergänze in <code>css/style.css</code> eine <code>.done</code>-Regel, damit
+            erledigte Einträge durchgestrichen sind.</li>
+          <li>Lass <code>renderTodos()</code> am Ende zusätzlich den
+            <code>status</code> setzen – z.&nbsp;B.
+            <code>status.textContent = todos.length + " Todos"</code>.</li>
+        </ol>
+      </div>
+      <label class="aufgabe-done"><input type="checkbox" class="aufgabe-check" data-id="E" data-count="1"> Aufgabe E erledigt</label>
+    </section>
+
+    <!-- ═══════════════════════════ TEIL 3 ═════════════════════════ -->
+    <div class="part-head">
+      <p class="kicker">Teil 3 · Events — die Seite reagiert</p>
+      <h2>Auf Klicks &amp; Eingaben reagieren</h2>
+    </div>
+    <p style="color:var(--muted); font-size:.95rem; margin:10px 0 0;">
+      Noch sind die Einträge fest im Code. Jetzt soll der <em>Nutzer</em> bestimmen,
+      was passiert. Dafür hören wir auf <strong>Events</strong> – Ereignisse wie
+      Mausklicks.</p>
+
+    <!-- F · Events verstehen ───────────────────────────────────────── -->
+    <section class="card" data-aufgabe="F">
+      <h2><span class="num">F</span> Events: dein Plan für „wenn …, dann …"</h2>
+      <p class="meta-time">Konzept + erstes Event · 15 Min</p>
+      <p class="refs"><span class="refs-label">MDN</span>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/EventTarget/addEventListener" target="_blank" rel="noopener">addEventListener()</a>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/Element/click_event" target="_blank" rel="noopener">click-Event</a>
+        <a href="https://www.w3schools.com/jsref/dom_obj_event.asp" target="_blank" rel="noopener">Event-Liste (W3Schools)</a></p>
+      <p>Bisher lief unser Code einmal von oben nach unten durch. Eine GUI funktioniert
+        anders: Das Programm <strong>wartet</strong>, bis etwas passiert, und reagiert
+        dann. Man sagt vorher: <em>„Wenn der Nutzer auf dieses Element klickt, führe
+        diese Funktion aus."</em> Diese Funktion heißt <strong>Event-Handler</strong>.</p>
+      <p>Du meldest sie mit <code>addEventListener(typ, funktion)</code> bei einem Element
+        an. Schreib zum Üben ans Ende von <code>script.js</code>:</p>
+      <div class="codefile">
+        <span class="fl-label">js/script.js</span>
+        <span class="cmt">// „wenn add-btn geklickt wird, dann …"</span>
+        <span class="ln">addBtn.addEventListener("click", function () {</span>
+        <span class="ln">  console.log("Knopf wurde geklickt!");</span>
+        <span class="ln">});</span>
+      </div>
+      <p>Speichern, neu laden, Knopf klicken – bei jedem Klick erscheint die Meldung in
+        der Konsole. Die Funktion läuft also <em>nicht sofort</em>, sondern jedes Mal,
+        wenn das Event eintritt. Der erste Parameter ist der <strong>Event-Typ</strong>
+        als Text (<code>"click"</code>, <code>"input"</code>, <code>"keydown"</code> …),
+        der zweite deine Funktion.</p>
+      <div class="hint">
+        <strong>Häufige Stolperfalle:</strong> Schreib <code>addEventListener("click", f)</code>
+        <em>ohne</em> Klammern hinter <code>f</code>. Mit <code>f()</code> würdest du die
+        Funktion <em>sofort</em> ausführen und ihr Ergebnis übergeben – nicht die Funktion
+        selbst. Hier nutzen wir gleich eine namenlose <code>function () { … }</code> direkt.
+      </div>
+      <div class="try">
+        <span class="try-label">Probier es aus</span>
+        <ol>
+          <li>Häng den Klick-Handler an <code>addBtn</code> und prüfe die Konsolen-Meldung.</li>
+          <li>Häng testweise einen Handler an <code>input</code> für den Typ
+            <code>"input"</code>, der bei jeder Tasteneingabe <code>input.value</code>
+            loggt. Beobachte, wie er bei <em>jedem</em> Tastendruck feuert.</li>
+        </ol>
+      </div>
+      <label class="aufgabe-done"><input type="checkbox" class="aufgabe-check" data-id="F" data-count="1"> Aufgabe F erledigt</label>
+    </section>
+
+    <!-- G · Hinzufügen-Button verdrahten ───────────────────────────── -->
+    <section class="card" data-aufgabe="G">
+      <h2><span class="num">G</span> Den „Hinzufügen"-Knopf verdrahten</h2>
+      <p class="meta-time">Kernbaustein · 20 Min</p>
+      <p class="refs"><span class="refs-label">MDN</span>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/HTMLInputElement/value" target="_blank" rel="noopener">input.value</a>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/EventTarget/addEventListener" target="_blank" rel="noopener">addEventListener()</a></p>
+      <p>Jetzt verbinden wir alles: Beim Klick lesen wir den Text aus dem Feld, legen mit
+        deinem <code>addTodo(text)</code> aus Blatt&nbsp;03 ein neues Todo an, leeren das
+        Feld und <strong>zeichnen die Liste neu</strong>:</p>
+      <div class="codefile">
+        <span class="fl-label">js/script.js</span>
+        <span class="ln">addBtn.addEventListener("click", function () {</span>
+        <span class="cmt">  // Text aus dem Feld holen</span>
+        <span class="ln">  let text = input.value;</span>
+        <span class="ln"></span>
+        <span class="cmt">  // leere Eingabe abfangen</span>
+        <span class="ln">  if (text === "") {</span>
+        <span class="ln">    return;</span>
+        <span class="ln">  }</span>
+        <span class="ln"></span>
+        <span class="ln">  addTodo(text);</span>
+        <span class="cmt">  // Feld wieder leeren</span>
+        <span class="ln">  input.value = "";</span>
+        <span class="cmt">  // Anzeige aktualisieren</span>
+        <span class="ln">  renderTodos();</span>
+        <span class="ln">});</span>
+      </div>
+      <p>Das ist das Grundmuster jeder Interaktion: <strong>Daten ändern →
+        <code>renderTodos()</code> aufrufen</strong>. Weil <code>renderTodos()</code> die
+        Liste jedes Mal frisch aus <code>todos</code> aufbaut, erscheint der neue Eintrag
+        automatisch. Die festen Test-<code>addTodo</code>-Zeilen aus Aufgabe&nbsp;E kannst
+        du jetzt löschen.</p>
+      <div class="hint">
+        <strong>Tipp:</strong> Mit <code>if (text === "") return;</code> verhinderst du
+        leere Todos – genau wie das <code>return</code> aus Blatt&nbsp;03 die Funktion
+        sofort beendet. (Noch robuster: <code>text.trim() === ""</code> fängt auch reine
+        Leerzeichen ab.)
+      </div>
+      <div class="try">
+        <span class="try-label">Probier es aus</span>
+        <ol>
+          <li>Verdrahte den Knopf wie oben. Tippe ein Todo, klick „Hinzufügen" – es soll
+            in der Liste erscheinen und das Feld leer werden.</li>
+          <li>Füge mehrere Todos hinzu. Stimmt die Reihenfolge?</li>
+          <li>Klick den Knopf bei <em>leerem</em> Feld – es darf kein leeres Todo entstehen.</li>
+        </ol>
+      </div>
+      <label class="aufgabe-done"><input type="checkbox" class="aufgabe-check" data-id="G" data-count="1"> Aufgabe G erledigt</label>
+    </section>
+
+    <!-- H · Abhaken per Klick ──────────────────────────────────────── -->
+    <section class="card" data-aufgabe="H">
+      <h2><span class="num">H</span> Todos abhaken per Klick</h2>
+      <p class="meta-time">Das Ziel des Blattes · 20 Min</p>
+      <p class="refs"><span class="refs-label">MDN</span>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/EventTarget/addEventListener" target="_blank" rel="noopener">addEventListener()</a>
+        <a href="https://developer.mozilla.org/de/docs/Web/API/Element/classList" target="_blank" rel="noopener">classList</a></p>
+      <p>Letzter Schritt: Ein Klick auf einen Eintrag soll ihn als erledigt
+        markieren – also dein <code>toggleTodo(index)</code> aus Blatt&nbsp;03 aufrufen
+        und neu zeichnen. Den Handler hängen wir <strong>beim Bauen</strong> jedes
+        <code>&lt;li&gt;</code> an, in der Schleife von <code>renderTodos()</code>.
+        Ergänze dort, direkt vor <code>list.append(li)</code>:</p>
+      <div class="codefile">
+        <span class="fl-label">js/script.js — in der renderTodos-Schleife</span>
+        <span class="cmt">// Klick auf diese Zeile schaltet ihren Zustand um</span>
+        <span class="ln">li.addEventListener("click", function () {</span>
+        <span class="ln">  toggleTodo(i);</span>
+        <span class="ln">  renderTodos();</span>
+        <span class="ln">});</span>
+      </div>
+      <p>Hier zahlt sich der Zähler <code>i</code> aus: Jedes <code>&lt;li&gt;</code>
+        merkt sich „seinen" Index und schaltet beim Klick genau das richtige Todo um.
+        Danach baut <code>renderTodos()</code> die Liste neu – mit oder ohne
+        <code>done</code>-Klasse. Damit klickst du Einträge an und wieder ab:</p>
+      <div class="screen">
+        <span class="screen-label">Klick auf eine Zeile schaltet sie um</span>
+        <h3>Meine Todo-Liste</h3>
+        <ul class="mock">
+          <li class="done">Einkaufen gehen</li>
+          <li>Pause machen</li>
+        </ul>
+        <p class="stat">1 von 2 erledigt</p>
+      </div>
+      <div class="hint">
+        <strong>Warum funktioniert <code>i</code> hier korrekt?</strong> Weil wir die
+        Schleife mit <code>let i</code> schreiben, bekommt jeder Durchlauf sein
+        <em>eigenes</em> <code>i</code>. Mit <code>var</code> würden alle Handler am Ende
+        denselben Wert sehen – ein klassischer Anfängerfehler. <code>let</code> nimmt ihn
+        dir ab.
+      </div>
+      <div class="try">
+        <span class="try-label">Probier es aus</span>
+        <ol>
+          <li>Ergänze den Klick-Handler in der Schleife. Klick einen Eintrag an – wird er
+            durchgestrichen? Nochmal klicken – ist er wieder offen?</li>
+          <li>Lass <code>renderTodos()</code> den <code>status</code> mit „X von Y erledigt"
+            füllen (zähle in der Schleife die erledigten mit).</li>
+          <li>🎉 Deine Todo-App ist benutzbar: hinzufügen <em>und</em> abhaken. Vergleiche
+            bei Bedarf mit der Musterlösung <code>js/script.solution.js</code> – erst selbst
+            probieren.</li>
+        </ol>
+      </div>
+      <label class="aufgabe-done"><input type="checkbox" class="aufgabe-check" data-id="H" data-count="1"> Aufgabe H erledigt</label>
+    </section>
+
+    <!-- ★ Klausur-Bonus ───────────────────────────────────────────── -->
+    <section class="card bonus" data-aufgabe="bonus">
+      <h2><span class="num">★</span> Klausur-Training: drei Mini-Aufgaben</h2>
+      <p class="meta-time">Klausurcharakter · für alle, die schneller sind</p>
+      <p>Diese drei Aufgaben sind <strong>unabhängig</strong> von der Todo-App und gut zum
+        Üben für die Klausur. Empfehlung: erst <em>ohne</em> nachzuschlagen versuchen.
+        Leg dir jeweils eine kleine HTML-Datei an (oder probiere im
+        <a href="https://playcode.io/javascript" target="_blank" rel="noopener">Online-Editor</a>).</p>
+
+      <p style="margin-top:18px;"><strong>1 · Zähler-Button.</strong> Gegeben:</p>
+      <div class="codefile html">
+        <span class="fl-label">HTML</span>
+        <span class="ln">&lt;div class="container"&gt;</span>
+        <span class="ln">  &lt;button id="counterButton"&gt;Count + 1&lt;/button&gt;</span>
+        <span class="ln">  &lt;div id="number"&gt;1&lt;/div&gt;</span>
+        <span class="ln">&lt;/div&gt;</span>
+      </div>
+      <p>Bei jedem Klick auf <code>counterButton</code> erhöht sich die Zahl im
+        <code>#number</code> um&nbsp;1. Bei <em>geraden</em> Zahlen wird der Hintergrund
+        des <code>#number</code> schwarz und der Text weiß, bei <em>ungeraden</em>
+        umgekehrt. (Tipp: <code>Number(...)</code> wandelt Text in eine Zahl,
+        <code>zahl % 2 === 0</code> prüft auf gerade, gesetzt wird über
+        <code>el.style.background</code> und <code>el.style.color</code>.)</p>
+
+      <p style="margin-top:18px;"><strong>2 · Namens-Begrüßung.</strong> Gegeben:</p>
+      <div class="codefile html">
+        <span class="fl-label">HTML</span>
+        <span class="ln">&lt;div class="container"&gt;&lt;/div&gt;</span>
+        <span class="ln">&lt;form&gt;</span>
+        <span class="ln">  &lt;input class="input-element" placeholder="add your name"&gt;</span>
+        <span class="ln">  &lt;button type="button" id="enter-name"&gt;Enter name&lt;/button&gt;</span>
+        <span class="ln">&lt;/form&gt;</span>
+      </div>
+      <p>Klick auf den Button zeigt im <code>.container</code> ein
+        <code>&lt;div&gt;</code> mit dem Text <code>Hello! How are you NAME?</code>
+        (NAME = Eingabe). Bei jeder neuen Eingabe wird das alte <code>&lt;div&gt;</code>
+        durch ein neues <em>ersetzt</em> (nutze <code>element.remove()</code>). Bei
+        <em>leerer</em> Eingabe erscheint stattdessen ein Hinweis, bitte einen Namen
+        einzugeben – und kein Begrüßungs-<code>div</code>.</p>
+
+      <p style="margin-top:18px;"><strong>3 · Colorful Divs.</strong> Drei Buttons
+        (grün/blau/rot), ein Reset-Button, ein Container <code>#colorful-divs</code> und
+        ein <code>#info</code>-Bereich.</p>
+      <ul>
+        <li>Klick auf eine Farbe hängt dem <code>#colorful-divs</code> ein
+          <code>&lt;div&gt;</code> mit der passenden Klasse (<code>green</code>/<code>blue</code>/<code>red</code>)
+          und dem Farbnamen als Text an.</li>
+        <li>Das <code>#info</code> zeigt stets aktuell, wie viele divs je Farbe vorhanden
+          sind (z.&nbsp;B. „3 grün, 2 rot, 5 blau").</li>
+        <li>Der Reset-Button löscht alle divs in <code>#colorful-divs</code>
+          (Tipp: <code>colorfulDivs.innerHTML = ""</code>).</li>
+      </ul>
+      <div class="hint">
+        Diese drei trainieren genau die heutigen Bausteine: Event-Handler,
+        <code>createElement</code>/<code>append</code>/<code>remove</code>,
+        <code>classList</code> und <code>.style</code>. Wer sie ohne Hilfe schafft, ist
+        für den DOM-Teil der Klausur gut gerüstet.
+      </div>
+      <label class="aufgabe-done"><input type="checkbox" class="aufgabe-check" data-id="bonus" data-count="0"> Klausur-Bonus erledigt</label>
+    </section>
+
+    <!-- Geschafft ─────────────────────────────────────────────────── -->
+    <section class="done">
+      <h2>🎉 Geschafft</h2>
+      <p style="color:var(--muted); margin-top:0;">Das kannst du jetzt:</p>
+      <ul class="checks">
+        <li>das DOM als Baum verstehen und mit <code>document.querySelector</code> Elemente auswählen</li>
+        <li>Inhalte mit <code>innerHTML</code>/<code>textContent</code> lesen und ändern</li>
+        <li>mit <code>createElement</code> + <code>append</code> neue Elemente erzeugen und einhängen</li>
+        <li>mit <code>classList</code> CSS-Klassen setzen und entfernen</li>
+        <li>mit <code>addEventListener</code> auf Klicks und Eingaben reagieren</li>
+        <li>eine Liste aus Daten zeichnen und bei jeder Änderung neu aufbauen — eine fertige Todo-App!</li>
+      </ul>
+      <div>
+        <button class="reset-link" id="reset-btn" type="button">Fortschritt zurücksetzen</button>
+      </div>
+    </section>
+
+    <p class="footnote">// Tipp: Nach jeder Änderung an <code>index.html</code> oder <code>js/script.js</code> die Seite neu laden (F5).</p>
+
+    <footer class="site-foot">
+      <a href="../">← Alle Übungsblätter</a>
+      <span class="sep">·</span>
+      <a href="../impressum.html">Impressum</a>
+    </footer>
+  </main>
+
+  <!-- Fortschritts-Tracker dieses Übungsblatts. NICHT Teil der Aufgaben –
+       deine eigene Arbeit machst du in index.html und js/script.js. -->
+  <script>
+    (function () {
+      var KEY = document.body.getAttribute('data-storage-key') || 'webtech-js2-ub-progress-v1';
+      var checks = Array.prototype.slice.call(document.querySelectorAll('.aufgabe-check'));
+      var counted = checks.filter(function (c) { return c.getAttribute('data-count') === '1'; });
+      var fill = document.getElementById('progress-fill');
+      var text = document.getElementById('progress-text');
+      var saved = {};
+      try { saved = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
+
+      function update() {
+        var done = 0;
+        counted.forEach(function (c) { if (c.checked) done++; });
+        var total = counted.length;
+        if (text) text.textContent = done + ' / ' + total + ' Aufgaben';
+        if (fill) fill.style.width = total ? (done / total * 100) + '%' : '0%';
+      }
+      function persist() {
+        var state = {};
+        checks.forEach(function (c) { if (c.checked) state[c.getAttribute('data-id')] = 1; });
+        try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+      }
+      checks.forEach(function (c) {
+        var card = c.closest('.card');
+        if (saved[c.getAttribute('data-id')]) c.checked = true;
+        if (card) card.classList.toggle('is-done', c.checked);
+        c.addEventListener('change', function () {
+          if (card) card.classList.toggle('is-done', c.checked);
+          persist(); update();
+        });
+      });
+      update();
+
+      var reset = document.getElementById('reset-btn');
+      if (reset) reset.addEventListener('click', function () {
+        if (!confirm('Fortschritt auf diesem Blatt zurücksetzen?')) return;
+        checks.forEach(function (c) {
+          c.checked = false;
+          var card = c.closest('.card');
+          if (card) card.classList.remove('is-done');
+        });
+        try { localStorage.removeItem(KEY); } catch (e) {}
+        update();
+      });
+    })();
+  </script>
+</body>
+</html>
